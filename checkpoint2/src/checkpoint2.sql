@@ -49,7 +49,7 @@ WHERE data_officerallegation.disciplined=False AND data_officerallegation.allega
 /*2. Is the frequency of drug/alcohol abuse allegations versus all other allegations changing
 over time? We will visualize this with a connected scatterplot.*/
 
--- All inforation on allegations with drug/alcohol and medical violations = 1930
+--Years for allegations with drug/alcohol and medical violations
 SELECT SUBSTRING(cast(start_date as varchar(100)),1, 4) as Year
 FROM data_officerallegation
 WHERE data_officerallegation.allegation_category_id IN
@@ -60,8 +60,7 @@ WHERE data_officerallegation.allegation_category_id IN
     OR data_allegationcategory.category = 'Medical'
     OR data_allegationcategory.category_code IN ('003', '003A', '003B', '003C', '003D', '003E'));
 
---Question 2:
--- All info on allegations with d/a/m = 1930
+--Years for all allegations 
 SELECT SUBSTRING(cast(start_date as varchar(100)),1, 4) as Year2
 FROM data_officerallegation
 WHERE data_officerallegation.allegation_category_id IN
