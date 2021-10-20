@@ -1,4 +1,7 @@
---Question 1:
+/*Question 1: Are officers with drug/alcohol abuse allegations more or less likely to be disciplined as a
+result of the fallout of the allegation, compared with officers with all other kinds of
+misconduct allegations? We will visualize this with two pie graphs next to each other,
+showing percentage disciplined versus not disciplined in each group.*/
 
 --D/A/M allegations and disciplined = 737
 SELECT COUNT (DISTINCT(officer_id))
@@ -43,8 +46,8 @@ WHERE data_officerallegation.disciplined=False AND data_officerallegation.allega
     OR data_allegationcategory.category_code IN ('08J', '024', '003', '003A', '003B', '003C', '003D', '003E'))
 
 
---Question 2:
--- All info on allegations with d/a/m = 1930
+/*2. Is the frequency of drug/alcohol abuse allegations versus all other allegations changing
+over time? We will visualize this with a connected scatterplot.*/
 SELECT *
 FROM data_officerallegation
 WHERE data_officerallegation.allegation_category_id IN
