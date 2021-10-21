@@ -9,8 +9,10 @@ For our second checkpoint, we created visualizations to answer the following que
 
 1) Are officers with drug/alcohol abuse allegations more or less likely to be disciplined as a result of the fallout of the allegation, compared with officers with all other kinds of misconduct allegations?
 
-We visualized this with two adjacent pie graphs, showing percentage disciplined versus not disciplined in each group. The SQL code under the src directory was utilized to generate the data, which was then visualized in Tableau.
+We visualized this with two adjacent pie graphs, showing percentage disciplined versus not disciplined in each group. The SQL code under the src directory was utilized to generate the data, which was then plotted in Tableau.
 
 2) Is the frequency of drug/alcohol abuse allegations versus all other allegations changing over time? We will visualize this with a connected scatterplot.
 
-The SQL code under the src directory contains our query data. The output was augmented with the Python code under src as well. This was then uploaded into Tableau to generate a plot with the two lines.
+The SQL code under the src directory contains our query data. Since we are using the same table for each query, it was challenging to join or make a union of the output. Thus we ran each separately and exported the output to two CSV files. We then used Python to join the tables and export as one CSV file. The Python code for this is provided as well under src.
+
+The output then uploaded into Tableau to generate a plot with the two lines shown.
