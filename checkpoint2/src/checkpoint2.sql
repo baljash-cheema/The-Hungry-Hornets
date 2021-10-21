@@ -50,7 +50,7 @@ WHERE data_officerallegation.disciplined=False AND data_officerallegation.allega
 over time? We will visualize this with a connected scatterplot.*/
 
 --Years for allegations with drug/alcohol and medical violations
-SELECT SUBSTRING(cast(start_date as varchar(100)),1, 4) as Year_drugalcmed
+SELECT SUBSTRING(cast(start_date as varchar(100)),1, 4) as year_drugalcmed
 FROM data_officerallegation
 WHERE data_officerallegation.allegation_category_id IN
     (SELECT id
@@ -61,7 +61,7 @@ WHERE data_officerallegation.allegation_category_id IN
     OR data_allegationcategory.category_code IN ('003', '003A', '003B', '003C', '003D', '003E'));
 
 --Years for all allegations
-SELECT SUBSTRING(cast(start_date as varchar(100)),1, 4) as Year_other
+SELECT SUBSTRING(cast(start_date as varchar(100)),1, 4) as year_other
 FROM data_officerallegation
 WHERE data_officerallegation.allegation_category_id IN
     (SELECT id
