@@ -20,7 +20,7 @@ def convert_time(df,list):
 
     return None
 
-if __name__ == '__main__':
+def main():
     file = 'csv/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/postgres_public_trr_weapondischarge_refresh.csv'
 
@@ -38,5 +38,9 @@ if __name__ == '__main__':
     convert_bool(df1,to_bool1)
     convert_time(df1,to_timestamp1)
     convert_bool(df2,to_bool2)
+    print(df1,df2)
 
-    # print(df)
+if __name__ == '__main__':
+    main()
+
+# redacted function only needs to run on the columns listed
