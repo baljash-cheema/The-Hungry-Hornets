@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f2aa215-1b3d-42dd-b901-7527e0a026d2" name="Changes" comment="" />
+    <list default="true" id="3f2aa215-1b3d-42dd-b901-7527e0a026d2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/datacleaning/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/datacleaning/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,6 +33,7 @@
       <updated>1634326535862</updated>
       <workItem from="1634326538970" duration="13000" />
       <workItem from="1634646237007" duration="13000" />
+      <workItem from="1635880810688" duration="87000" />
     </task>
     <servers />
   </component>

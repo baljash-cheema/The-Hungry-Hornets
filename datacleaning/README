@@ -11,3 +11,11 @@ trr_weapondischarge_refresh
 trr_trrstatus_refresh
 done - officer birth year, officer appointed date
 skipped - status_datetime
+
+
+
+1. Download tables from Datagrip
+2. Open in OpenRefine -> run JSON code for trr_trrstatus_refresh and trr_trr_refresh
+3. Export each to CSV
+4. Open in Python using pandas
+5. Edit
