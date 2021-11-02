@@ -1,0 +1,13 @@
+
+
+1. Download from Datagrip postgres the CSVs for the 6 tables, adding column headers.
+2. Upload CSVs into open refine:
+trr_trr_refresh
+done - beat, officer appointed date, birth year, age, subject_birth year, subject_age,
+skipped - date/time
+
+trr_weapondischarge_refresh
+
+trr_trrstatus_refresh
+done - officer birth year, officer appointed date
+skipped - status_datetime
