@@ -22,16 +22,21 @@ def convert_time(df,list):
 
 if __name__ == '__main__':
     file = 'csv/postgres_public_trr_trr_refresh.csv'
+    file2 = 'csv/postgres_public_trr_weapondischarge_refresh.csv'
 
-    df = pd.read_csv(file)
+    df1 = pd.read_csv(file)
+    df2 = pd.read_csv(file2)
 
-    to_bool = ["officer_on_duty","officer_injured", "officer_in_uniform", "subject_armed", "subject_injured",
+    to_bool1 = ["officer_on_duty","officer_injured", "officer_in_uniform", "subject_armed", "subject_injured",
                        "subject_alleged_injury","notify_oemc","notify_district_sergeant","notify_op_command",
                        "notify_det_division"]
 
-    to_timestamp = ['trr_datetime', 'trr_created']
+    to_timestamp1 = ['trr_datetime', 'trr_created']
 
-    convert_bool(df,to_bool)
-    convert_time(df,to_timestamp)
+    to_bool2 = ['firearm_reloaded', 'sight_used']
 
-    print(df)
+    convert_bool(df1,to_bool1)
+    convert_time(df1,to_timestamp1)
+    convert_bool(df2,to_bool2)
+
+    # print(df)
