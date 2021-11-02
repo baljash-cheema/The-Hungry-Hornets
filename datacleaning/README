@@ -1,3 +1,25 @@
+trr_trr_refresh
+-trr_datetime - not done
+-beat - done
+-officer_appointed_date - need to fix
+-officer_birth_year - done
+-officer_age - done
+-officer_on_duty - bool
+-officer_injured - bool
+-officer_in_uniform - bool
+-subject_birth_year - done
+-subject_age - done
+-subject_armed - bool
+-subject_injured - bool
+-subject_alleged_injury	- bool
+-notify_oemc - bool
+-notify_district_sergeant - bool
+-notify_op_command - bool
+-notify_det_division - bool
+-trr_created - timestamp 
+
+
+
 
 
 1. Download from Datagrip postgres the CSVs for the 6 tables, adding column headers.
