@@ -1,3 +1,33 @@
+Our task here is to clean dirty data entered into the following trr tables:
+
+-trr_trr_refresh
+-trr_trr_actionresponse_refresh
+-trr_charge_refresh
+-trr_subjectweapon_refresh
+-trr_trrstatus_refresh
+-trr_weapondischarge_refresh
+
+For this assignment, we will be using OpenRefine, Python with the pandas package, and Datagrip to access the CPDP database. 
+
+2.1 Type Correction 
+For this portion, our goal is to type correct certain columns within 3 of these tables:
+
+1. trr_trr_refresh
+2. trr_weapondischarge_refresh
+3. trr_trrstatus_refresh
+
+We first access the CPDP database using OpenRefine.  
+
+For trr_trr_refresh and trr_treestatus_refresh, please load the table and run the JSON file associated with each. 
+
+Next, export all 3 tables (trr_weapondischarge_refresh) left in its original form, to CSVs.
+
+These CSVs are then to be loaded in Python as file1 (trr_trr_refresh), file2 (trr_weapondischarge_refresh), and file3 (trr_trrstatus_refresh).
+
+Please execute the provided Python file. 
+
+
+
 trr_trr_refresh
 -trr_datetime - not done
 -beat - done
