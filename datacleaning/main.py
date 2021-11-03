@@ -20,6 +20,16 @@ def convert_time(df,list):
 
     return None
 
+def convert_redact(df,list):
+    '''
+    Takes a list of strings that are column headers, iterates through them and converts it to bool
+    '''
+    
+    for each in list:
+        df[each].replace({"REDACTED": None}, inplace=True)
+    
+    return None
+
 def main():
     file = 'csv/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/postgres_public_trr_weapondischarge_refresh.csv'
