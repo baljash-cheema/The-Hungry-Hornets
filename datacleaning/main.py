@@ -16,7 +16,7 @@ def convert_time(df,list):
     '''
 
     for each in list:
-        pd.to_datetime(df[each])
+        df[each] = pd.to_datetime(df[each],utc=True)
 
     return None
 
@@ -81,7 +81,7 @@ def main():
     convert_time(df3,to_timestamp3)
     convert_redact(df3,to_null3)
 
-    print(df1['officer_appointed_date])
+    print(df1['trr_datetime'])
 
 if __name__ == '__main__':
     main()
