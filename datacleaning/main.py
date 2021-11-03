@@ -2,7 +2,7 @@ import pandas as pd
 
 def convert_bool(df,list):
     '''
-    Takes a list of strings that are column headers, iterates through them and converts any "redacted" entries to null
+    Takes a list of strings that are column headers, iterates through them and converts it to bool.
     '''
 
     for each in list:
@@ -22,13 +22,14 @@ def convert_time(df,list):
 
 def convert_redact(df,list):
     '''
-    Takes a list of strings that are column headers, iterates through them and converts it to bool
+    Takes a list of strings that are column headers, iterates through them and converts any "redacted" entries to null.
     '''
     
     for each in list:
         df[each].replace({"REDACTED": None}, inplace=True)
     
     return None
+
 
 def main():
     file = 'csv/postgres_public_trr_trr_refresh.csv'

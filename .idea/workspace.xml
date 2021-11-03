@@ -34,6 +34,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="RunManager">
@@ -76,7 +78,8 @@
       <workItem from="1634326538970" duration="13000" />
       <workItem from="1634646237007" duration="13000" />
       <workItem from="1635880810688" duration="432000" />
-      <workItem from="1635885760822" duration="304000" />
+      <workItem from="1635885760822" duration="909000" />
+      <workItem from="1635945963674" duration="185000" />
     </task>
     <servers />
   </component>
