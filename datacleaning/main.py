@@ -43,46 +43,36 @@ def main():
     to_bool1 = ["officer_on_duty","officer_injured", "officer_in_uniform", "subject_armed", "subject_injured",
                        "subject_alleged_injury","notify_oemc","notify_district_sergeant","notify_op_command",
                        "notify_det_division"]
-
-    to_timestamp1 = ['trr_datetime', 'trr_created']
-
-    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
-                'officer_on_duty',
-                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
-                'subject_injured',
-                'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
-                'notify_det_division',
-                'trr_created']
-
-    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
-                'officer_on_duty',
-                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
-                'subject_injured',
-                'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
-                'notify_det_division',
-                'trr_created']
-
-
     to_bool2 = ['firearm_reloaded', 'sight_used']
 
-    to_null2 = ['firearm_reloaded', 'sight_used']
-
-    to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
+    to_timestamp1 = ['trr_datetime', 'officer_appointed_date', 'trr_created']
     to_timestamp3 = ['status_datetime']
 
-    convert_bool(df1,to_bool1)
-    convert_time(df1,to_timestamp1)
+    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
+                'officer_on_duty',
+                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
+                'subject_injured',
+                'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
+                'notify_det_division',
+                'trr_created']
+    to_null2 = ['firearm_reloaded', 'sight_used']
+    to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
+
     convert_redact(df1,to_null1)
-
     convert_redact(df2,to_null2)
-
-    convert_bool(df2,to_bool2)
-
-    convert_time(df3,to_timestamp3)
     convert_redact(df3,to_null3)
 
-    print(df1['trr_datetime'])
+    convert_bool(df1,to_bool1)
+    convert_bool(df2,to_bool2)
+
+    convert_time(df1,to_timestamp1)
+    convert_time(df3,to_timestamp3)
+
+
+    print(df1['officer_on_duty'])
 
 if __name__ == '__main__':
     main()
 
+#can't get trr_trr_refresh trr_datetime to correct unit for seconds. should be more 0's.
+#officer appointed date isn't in original trr_trr table
