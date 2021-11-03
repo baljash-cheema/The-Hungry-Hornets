@@ -2,7 +2,7 @@ import pandas as pd
 
 def convert_bool(df,list):
     '''
-    Takes a list of strings that are column headers, iterates through them and converts it to bool
+    Takes a list of strings that are column headers, iterates through them and converts any "redacted" entries to null
     '''
 
     for each in list:
