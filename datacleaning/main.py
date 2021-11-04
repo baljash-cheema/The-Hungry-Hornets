@@ -85,7 +85,12 @@ def integration():
     df3 = pd.merge(trr_df, officer_df, how="left", left_on=['officer_first_name', 'officer_middle_initial', 'officer_last_name'],
                    right_on=['first_name','middle_initial', 'last_name',])
 
-    print(df3.head())
+    df = pd.DataFrame({'key': ['K0', 'K1', 'K2', 'K3', 'K4', 'K5'],
+                       'A': ['A0', 'A1', 'A2', 'A3', 'A4', 'A5']})
+
+    # df.join(other, lsuffix='_caller', rsuffix='_other')
+
+    print(df3['id'])
 
     # officer_list=[]
     # refresh_list=[]
