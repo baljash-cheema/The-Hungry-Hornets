@@ -1,6 +1,8 @@
 import csv
 import datetime
-
+import numpy as np
+import re
+import datetime
 import pandas as pd
 
 def convert_bool(df,list):
@@ -119,6 +121,90 @@ def integration():
     df3 = trr_df.merge(officer_df, how="left",on=['last_name', 'appointed_date', 'first_name'])
 
     print(df3['id'])
+
+def reconciliation():
+    def p(x):
+      print(df[x].unique())
+      print(df[x].isna().sum())
+    for x in df['officer_first_name']:
+      y=x.split(" ")[0].capitalize()
+      df['officer_first_name'] = df['officer_first_name'].replace([x],y)
+
+    for x in df['officer_last_name']:
+      y=x.split(" ")[0].capitalize()
+      print(type(y))
+      df['officer_last_name'] = df['officer_last_name'].replace([x],y)
+
+    for x in df['officer_birth_year']:
+      if not np.isnan(x):
+        df['officer_last_name'] = df['officer_last_name'].replace([x], int(x))
+
+    for x in df['officer_race']:
+      if x=='UNKNOWN':
+        df['officer_race'] = df['officer_race'].replace([x], np.nan)
+      if x=='AMER IND/ALASKAN NATIVE':
+        df['officer_race'] = df['officer_race'].replace([x], 'NATIVE AMERICAN/ALASKAN NATIVE')
+
+    for x in df['subject_race']:
+      if x=='UNKNOWN':
+        df['subject_race'] = df['subject_race'].replace([x], np.nan)
+      if x=='UNKNOWN / REFUSED':
+        df['subject_race'] = df['subject_race'].replace([x], np.nan)
+      if x=='AMER IND/ALASKAN NATIVE':
+        df['subject_race'] = df['subject_race'].replace([x], 'NATIVE AMERICAN/ALASKAN NATIVE')
+      if x=='AMER INDIAN / ALASKAN NATIVE':
+        df['subject_race'] = df['subject_race'].replace([x], 'NATIVE AMERICAN/ALASKAN NATIVE')
+      if x=='ASIAN / PACIFIC ISLANDER':
+        df['subject_race'] = df['subject_race'].replace([x], 'ASIAN/PACIFIC ISLANDER')
+
+    #pd=pd.to_numeric(df['subject_gender'], errors='coerce')
+    for x in df['subject_gender']:
+      if x=='MALE':
+        df['subject_gender'] = df['subject_gender'].replace([x], 'M')
+      if x=='FEMALE':
+        df['subject_gender'] = df['subject_gender'].replace([x], 'F')
+
+    p('officer_appointed_date')
+    for x in df['officer_appointed_date']:
+        if x!='REDACTED':
+            if x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))!=4:
+                d=datetime.datetime.strptime(x,"%m-%d-%y")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+            elif x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))==4:
+                d=datetime.datetime.strptime(x,"%Y-%m-%d")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+            elif not x.split("-")[1].isnumeric():
+                d = datetime.datetime.strptime(x, "%Y-%b-%d")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+    for x in df['officer_appointed_date']:
+        if x!='REDACTED':
+            if int(x.split("-")[0])>2021:
+                d = datetime.datetime.strptime(x, "%Y-%m-%d")
+                print(1)
+                print(x,str(d.year-100)+'-'+str(d.month)+'-'+str(d.day))
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
+    p('subject_birth_year')
+    for x in df['subject_birth_year']:
+        if len(str(x))==2:
+            if x>5 and x<100:
+                y=int('19'+str(x))
+            df['subject_birth_year'] = df['subject_birth_year'].replace([int(x)], int(y))
+        if len(str(x))==1:
+            x='0'+str(x)
+            d = datetime.datetime.strptime(x, "%y")
+            df['subject_birth_year'] = df['subject_birth_year'].replace([int(x)],int(d.year))
+        if len(str(x))==3:
+            y='1'+str(x)
+            df['subject_birth_year'] = df['subject_birth_year'].replace([int(x)],int(y))
+
+    p('indoor_or_outdoor')
+    for x in df['indoor_or_outdoor']:
+        if x=='OUTDOOR':
+            df['indoor_or_outdoor'] = df['indoor_or_outdoor'].replace([x], 'Outdoor')
+        if x=='INDOOR':
+            df['indoor_or_outdoor'] = df['indoor_or_outdoor'].replace([x], 'Indoor')
+    p('indoor_or_outdoor')
+
 
 if __name__ == '__main__':
     # typecorrection()
