@@ -83,42 +83,28 @@ def integration():
     with open(trr_refresh) as csvfile:
         refresh_reader = csv.DictReader(csvfile)
 
-        count = 0
-
         for row in refresh_reader:
             refresh_tuple = tuple()
             year = row['officer_birth_year'][0:4]
             refresh_tuple = (row['officer_last_name'].lower().strip(), row['officer_first_name'].lower().strip())
             refresh_list.append(refresh_tuple)
 
-            # if count < 10:
-            #     print('refresh tuple',refresh_tuple)
-            #
-            # count += 1
-
     with open(data_officer) as csvfile2:
         officer_reader = csv.DictReader(csvfile2)
-
-        count = 0
 
         for all in officer_reader:
             officer_tuple = tuple()
             officer_tuple = ((all['last_name'].lower().strip(), all['first_name'].lower().strip()),all['id'])
             officer_list.append(officer_tuple)
 
-            # if count < 10:
-            #     print('officer_tuple',officer_tuple)
-            #
-            # count += 1
+    id_list = list()
 
-        id_list = list()
+    for each in refresh_list:
+        for all in officer_list:
+            if each == all[0]:
+                id_list.append((each,all[1]))
 
-        for each in refresh_list:
-            for all in officer_list:
-                if each == all[0]:
-                    id_list.append((each,all[1]))
-
-        print(id_list)
+    print(id_list)
 
 
 
