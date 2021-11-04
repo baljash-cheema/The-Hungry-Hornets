@@ -20,54 +20,10 @@ We first access the CPDP database using OpenRefine.
 
 For trr_trr_refresh and trr_treestatus_refresh, please load the table and run the JSON file associated with each. 
 
-Next, export all 3 tables (trr_weapondischarge_refresh) left in its original form, to CSVs.
+Next, export all 3 tables (trr_weapondischarge_refresh left in its original form), to CSVs.
 
 These CSVs are then to be loaded in Python as file1 (trr_trr_refresh), file2 (trr_weapondischarge_refresh), and file3 (trr_trrstatus_refresh).
 
-Please execute the provided Python file. 
+Please execute the provided Python file. This will output the 3 corrected tables for this component of the assignment. 
 
 
-
-trr_trr_refresh
--trr_datetime - not done
--beat - done
--officer_appointed_date - need to fix
--officer_birth_year - done
--officer_age - done
--officer_on_duty - bool
--officer_injured - bool
--officer_in_uniform - bool
--subject_birth_year - done
--subject_age - done
--subject_armed - bool
--subject_injured - bool
--subject_alleged_injury	- bool
--notify_oemc - bool
--notify_district_sergeant - bool
--notify_op_command - bool
--notify_det_division - bool
--trr_created - timestamp 
-
-
-
-
-
-1. Download from Datagrip postgres the CSVs for the 6 tables, adding column headers.
-2. Upload CSVs into open refine:
-trr_trr_refresh
-done - beat, officer appointed date, birth year, age, subject_birth year, subject_age,
-skipped - date/time
-
-trr_weapondischarge_refresh
-
-trr_trrstatus_refresh
-done - officer birth year, officer appointed date
-skipped - status_datetime
-
-
-
-1. Download tables from Datagrip
-2. Open in OpenRefine -> run JSON code for trr_trrstatus_refresh and trr_trr_refresh
-3. Export each to CSV
-4. Open in Python using pandas
-5. Edit
