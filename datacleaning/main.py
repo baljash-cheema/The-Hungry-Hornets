@@ -78,19 +78,24 @@ def integration():
     data_officer = 'csv/postgres_public_data_officer.csv'
 
     trr_df = pd.read_csv(trr_refresh)
+    trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name'},inplace=True)
+    trr_df['last_name'] = trr_df['last_name'].str.lower()
+    trr_df['first_name'] = trr_df['first_name'].str.lower()
+    # print(trr_df['last_name'])
     officer_df = pd.read_csv(data_officer)
+    officer_df['last_name'] = officer_df['last_name'].str.lower()
+    officer_df['first_name'] = officer_df['first_name'].str.lower()
+
+    # print(trr_df.columns)
 
     trr_df.drop(['id'],axis=1,inplace=True)
 
-    df3 = pd.merge(trr_df, officer_df, how="left", left_on=['officer_first_name', 'officer_middle_initial', 'officer_last_name'],
-                   right_on=['first_name','middle_initial', 'last_name',])
+    df3 = trr_df.merge(officer_df, how="left",on=['last_name','first_name'])
 
-    df = pd.DataFrame({'key': ['K0', 'K1', 'K2', 'K3', 'K4', 'K5'],
-                       'A': ['A0', 'A1', 'A2', 'A3', 'A4', 'A5']})
+    # df4 = trr_df.join(officer_df, on='last_name')
+    # df4 = trr_df.join(officer_df.set_index('last_name'), on='last_name')
 
-    # df.join(other, lsuffix='_caller', rsuffix='_other')
-
-    print(df3['id'])
+    print(df3['last_name'].unique())
 
     # officer_list=[]
     # refresh_list=[]
