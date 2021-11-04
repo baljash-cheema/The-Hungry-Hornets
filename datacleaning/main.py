@@ -68,9 +68,9 @@ def main():
     convert_time(df1,to_timestamp1)
     convert_time(df3,to_timestamp3)
 
-    print(df1['trr_datetime'])
+# need to convert to csv
+# still with time issue 
 
 if __name__ == '__main__':
     main()
 
-#can't get trr_trr_refresh trr_datetime to correct unit for seconds. should be more 0's.
