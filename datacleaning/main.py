@@ -76,37 +76,49 @@ def typecorrection():
 def integration():
     trr_refresh = 'csv/postgres_public_trr_trr_refresh.csv'
     data_officer = 'csv/postgres_public_data_officer.csv'
-    office_list=[]
+
+    officer_list=[]
     refresh_list=[]
+
     with open(trr_refresh) as csvfile:
         refresh_reader = csv.DictReader(csvfile)
 
-        with open(data_officer) as csvfile2:
-            officer_reader = csv.DictReader(csvfile2)
+        count = 0
 
-            count = 0
+        for row in refresh_reader:
+            refresh_tuple = tuple()
+            year = row['officer_birth_year'][0:4]
+            refresh_tuple = (row['officer_last_name'].lower().strip(), row['officer_first_name'].lower().strip())
+            refresh_list.append(refresh_tuple)
 
-            for row in refresh_reader:
-                refresh_tuple = tuple()
-                year = row['officer_birth_year'][0:4]
-                last_name = row['officer_last_name'].lower()
-                refresh_tuple = (row['officer_last_name'].lower().strip() ,row['officer_first_name'].lower().strip())
-                # print('refresh tuple',refresh_tuple)
+            # if count < 10:
+            #     print('refresh tuple',refresh_tuple)
+            #
+            # count += 1
 
-            for all in officer_reader:
-                officer_tuple = tuple()
-                officer_tuple = (all['last_name'].lower().strip(), all['first_name'].lower().strip())
-                #print('officer_tuple',officer_tuple)
-                #print('refresh_tuple',refresh_tuple)
-            office_list.append(list(officer_tuple))
-            refresh_list.append(list(refresh_tuple))
+    with open(data_officer) as csvfile2:
+        officer_reader = csv.DictReader(csvfile2)
 
-    for x in office_list:
-        for y in refresh_list:
-            if x==y:
-                print(x)
+        count = 0
 
+        for all in officer_reader:
+            officer_tuple = tuple()
+            officer_tuple = ((all['last_name'].lower().strip(), all['first_name'].lower().strip()),all['id'])
+            officer_list.append(officer_tuple)
 
+            # if count < 10:
+            #     print('officer_tuple',officer_tuple)
+            #
+            # count += 1
+
+        id_list = list()
+
+        for each in refresh_list:
+            for all in officer_list:
+                if each == all[0]:
+                    id_list.append((each,all[1]))
+
+        print(id_list)
 
 
 
