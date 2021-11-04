@@ -173,6 +173,8 @@ def integration():
     #
     # print(df3.head())
 
+    trr_df.drop(['id'],axis=1,inplace=True)
+
     trr_list = list()
     officer_list = list()
 
@@ -187,7 +189,24 @@ def integration():
     trr_df['ident'] = trr_list
     officer_df['ident'] = officer_list
 
-    print(officer_df['ident'])
+    df3 = trr_df.merge(officer_df, how="left",on=['ident'])
+
+    print(df3['id'].isnull().sum())
+
+    print(trr_df['officer_first_name'].isnull().sum())
+    print(trr_df['officer_last_name'].isnull().sum())
+    print(trr_df['officer_appointed_date'].isnull().sum())
+    print(trr_df['officer_birth_year'].isnull().sum())
+
+    print(officer_df['first_name'].isnull().sum())
+    print(officer_df['last_name'].isnull().sum())
+    print(officer_df['appointed_date'].isnull().sum())
+    print(officer_df['birth_year'].isnull().sum())
+
+    # print(df3['id'].isnull().sum())
+    # print(officer_df['appointed_date'].isnull().sum())
+    #
+    # df3.to_csv('integration.csv')
 
 if __name__ == '__main__':
     # typecorrection()
