@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 import pandas as pd
 
@@ -80,8 +81,29 @@ def integration():
     trr_df = pd.read_csv(trr_refresh)
     officer_df = pd.read_csv(data_officer)
 
-    trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial'}
-                  ,inplace=True)
+    for x in trr_df['officer_appointed_date']:
+        if type(x) != float:
+            x = x.split(' ')[0]
+            if x!='REDACTED':
+                if x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))!=4:
+                    d=datetime.datetime.strptime(x,"%m-%d-%y")
+                    trr_df['officer_appointed_date'] = trr_df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+                elif x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))==4:
+                    d=datetime.datetime.strptime(x,"%Y-%m-%d")
+                    trr_df['officer_appointed_date'] = trr_df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+                elif not x.split("-")[1].isnumeric():
+                    d = datetime.datetime.strptime(x, "%Y-%b-%d")
+                    trr_df['officer_appointed_date'] = trr_df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+    for x in trr_df['officer_appointed_date']:
+        if type(x) != float:
+            if x!='REDACTED':
+                # print(x)
+                if int(x.split("-")[0])>2021:
+                    d = datetime.datetime.strptime(x, "%Y-%m-%d")
+                    trr_df['officer_appointed_date'] = trr_df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
+
+    trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial',
+                           'officer_appointed_date' : 'appointed_date'},inplace=True)
 
     trr_df['last_name'] = trr_df['last_name'].str.lower()
     trr_df['first_name'] = trr_df['first_name'].str.lower()
@@ -94,13 +116,16 @@ def integration():
 
     trr_df.drop(['id'],axis=1,inplace=True)
 
-    df3 = trr_df.merge(officer_df, how="left",on=['last_name', 'middle_initial', 'first_name'])
+    df3 = trr_df.merge(officer_df, how="left",on=['last_name', 'appointed_date', 'first_name'])
 
-    print(df3['id'].isnull().sum())
+    print(df3['id'])
 
 if __name__ == '__main__':
     # typecorrection()
     integration()
+
+
+
 
 
 
