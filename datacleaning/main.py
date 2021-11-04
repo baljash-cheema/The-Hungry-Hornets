@@ -78,70 +78,30 @@ def integration():
     data_officer = 'csv/postgres_public_data_officer.csv'
 
     trr_df = pd.read_csv(trr_refresh)
-    trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name'},inplace=True)
+    officer_df = pd.read_csv(data_officer)
+
+    trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial'}
+                  ,inplace=True)
+
     trr_df['last_name'] = trr_df['last_name'].str.lower()
     trr_df['first_name'] = trr_df['first_name'].str.lower()
-    # print(trr_df['last_name'])
-    officer_df = pd.read_csv(data_officer)
+    trr_df['middle_initial'] = trr_df['middle_initial'].str.lower()
+
     officer_df['last_name'] = officer_df['last_name'].str.lower()
     officer_df['first_name'] = officer_df['first_name'].str.lower()
+    officer_df['middle_initial'] = officer_df['middle_initial'].str.lower()
 
-    # print(trr_df.columns)
 
     trr_df.drop(['id'],axis=1,inplace=True)
 
-    df3 = trr_df.merge(officer_df, how="left",on=['last_name','first_name'])
+    df3 = trr_df.merge(officer_df, how="left",on=['last_name', 'middle_initial', 'first_name'])
 
-    # df4 = trr_df.join(officer_df, on='last_name')
-    # df4 = trr_df.join(officer_df.set_index('last_name'), on='last_name')
-
-    print(df3['last_name'].unique())
-
-    # officer_list=[]
-    # refresh_list=[]
-
-    # with open(trr_refresh) as csvfile:
-    #     refresh_reader = csv.DictReader(csvfile)
-    #
-    #     for row in refresh_reader:
-    #         refresh_tuple = tuple()
-    #         year = row['officer_birth_year'][0:4]
-    #         refresh_tuple = (row['officer_last_name'].lower().strip(), row['officer_first_name'].lower().strip())
-    #         refresh_list.append(refresh_tuple)
-    #
-    # with open(data_officer) as csvfile2:
-    #     officer_reader = csv.DictReader(csvfile2)
-    #
-    #     for all in officer_reader:
-    #         officer_tuple = tuple()
-    #         officer_tuple = ((all['last_name'].lower().strip(), all['first_name'].lower().strip()),all['id'])
-    #         officer_list.append(officer_tuple)
-    #
-    # id_list = list()
-    #
-    # for each in refresh_list:
-    #     for all in officer_list:
-    #         if each == all[0]:
-    #             id_list.append((each,all[1]))
-    #
-    # print(id_list)
-
-
-    # for x in range(0, len(df1)):
-    #     for y in range(0, len(df2)):
-    #         if (df1['officer_first_name'][x] == df2['officer_first_name'][y] and df1['officer_middle_initial'][x] ==
-    #                 df2['officer_middle_initial'][y]
-    #                 and df1['officer_last_name'][x] == df2['officer_last_name'][y] and df1['officer_age'][x] ==
-    #                 df2['officer_age'][y] and
-    #                 df1['officer_race'][x] == df2['officer_race'][y]):
-    #             new_id = df3['id']  # data_officer id corresponding to given first and last name?
-    #             new_officer_id.append(df3['id'])  # generate column of ids which we can then merge with trr_trr_refresh
+    print(df3['id'].isnull().sum())
 
 if __name__ == '__main__':
     # typecorrection()
     integration()
-#Lili starter code
-#For creating a new column of officer ids to link the TRR filing officers with the TRR updating officers:
+
 
 
 
