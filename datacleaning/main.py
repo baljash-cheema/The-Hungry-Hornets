@@ -68,11 +68,9 @@ def main():
     convert_time(df1,to_timestamp1)
     convert_time(df3,to_timestamp3)
 
-
-    print(df1['officer_on_duty'])
+    print(df1['trr_datetime'])
 
 if __name__ == '__main__':
     main()
 
 #can't get trr_trr_refresh trr_datetime to correct unit for seconds. should be more 0's.
-#officer appointed date isn't in original trr_trr table
