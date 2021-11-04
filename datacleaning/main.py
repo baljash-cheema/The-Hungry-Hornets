@@ -31,7 +31,7 @@ def convert_redact(df,list):
     return None
 
 
-def main():
+def typecorrection():
     file = 'csv/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/postgres_public_trr_trrstatus_refresh.csv'
@@ -72,5 +72,22 @@ def main():
 # still with time issue 
 
 if __name__ == '__main__':
-    main()
+    typecorrection()
+
+#Lili starter code
+#For creating a new column of officer ids to link the TRR filing officers with the TRR updating officers:
+
+df1 = pd.read_csv('csv/postgres_public_trr_trr_refresh.csv')
+df2 = pd.read_csv('csv/postgres_public_trr_trrstatus_refresh.csv')
+df3 = pd.read_csv('csv/postgres_public_data_officer.csv')
+
+new_officer_id=[]
+for x in range(0,len(df1)):
+  for y in range(0, len(df2)):
+    if (df1['officer_first_name'][x]==df2['officer_first_name'][y] and df1['officer_middle_initial'][x]==df2['officer_middle_initial'][y]
+        and df1['officer_last_name'][x]==df2['officer_last_name'][y] and df1['officer_age'][x]==df2['officer_age'][y] and
+        df1['officer_race'][x]==df2['officer_race'][y]):
+        new_id = df3['id'] #data_officer id corresponding to given first and last name?
+        new_officer_id.append(df3['id']) #generate column of ids which we can then merge with trr_trr_refresh
+
 

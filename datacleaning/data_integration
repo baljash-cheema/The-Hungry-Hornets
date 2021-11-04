@@ -3,6 +3,7 @@
 df1 = pd.read_csv('postgres_public_trr_trr_refresh.csv')
 df2 = pd.read_csv('postgres_public_trr_trrstatus_refresh.csv')
 df3 = pd.read_csv('postgres_public_data_officer.csv')
+
 new_officer_id=[]
 for x in range(0,len(df1)):
   for y in range(0, len(df2)):
