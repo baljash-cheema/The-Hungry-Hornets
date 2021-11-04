@@ -35,7 +35,6 @@ def convert_redact(df,list):
     
     return None
 
-
 def typecorrection():
     file = 'csv/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/postgres_public_trr_weapondischarge_refresh.csv'
@@ -73,56 +72,10 @@ def typecorrection():
     convert_time(df1,to_timestamp1)
     convert_time(df3,to_timestamp3)
 
-# need to convert to csv
-# still with time issue
-
-def integration():
-    trr_refresh = 'csv/postgres_public_trr_trr_refresh.csv'
-    data_officer = 'csv/postgres_public_data_officer.csv'
-
-    trr_df = pd.read_csv(trr_refresh)
-    officer_df = pd.read_csv(data_officer)
-
-    for x in trr_df['officer_appointed_date']:
-        if type(x) != float:
-            x = x.split(' ')[0]
-            if x!='REDACTED':
-                if x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))!=4:
-                    d=datetime.datetime.strptime(x,"%m-%d-%y")
-                    trr_df['officer_appointed_date'] = trr_df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
-                elif x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))==4:
-                    d=datetime.datetime.strptime(x,"%Y-%m-%d")
-                    trr_df['officer_appointed_date'] = trr_df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
-                elif not x.split("-")[1].isnumeric():
-                    d = datetime.datetime.strptime(x, "%Y-%b-%d")
-                    trr_df['officer_appointed_date'] = trr_df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
-    for x in trr_df['officer_appointed_date']:
-        if type(x) != float:
-            if x!='REDACTED':
-                # print(x)
-                if int(x.split("-")[0])>2021:
-                    d = datetime.datetime.strptime(x, "%Y-%m-%d")
-                    trr_df['officer_appointed_date'] = trr_df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
-
-    trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial',
-                           'officer_appointed_date' : 'appointed_date'},inplace=True)
-
-    trr_df['last_name'] = trr_df['last_name'].str.lower()
-    trr_df['first_name'] = trr_df['first_name'].str.lower()
-    trr_df['middle_initial'] = trr_df['middle_initial'].str.lower()
-
-    officer_df['last_name'] = officer_df['last_name'].str.lower()
-    officer_df['first_name'] = officer_df['first_name'].str.lower()
-    officer_df['middle_initial'] = officer_df['middle_initial'].str.lower()
-
-
-    trr_df.drop(['id'],axis=1,inplace=True)
-
-    df3 = trr_df.merge(officer_df, how="left",on=['last_name', 'appointed_date', 'first_name'])
-
-    print(df3['id'])
-
 def reconciliation():
+    trr_refresh = 'csv/postgres_public_trr_trr_refresh.csv'
+    df = pd.read_csv(trr_refresh)
+
     def p(x):
       print(df[x].unique())
       print(df[x].isna().sum())
@@ -132,7 +85,6 @@ def reconciliation():
 
     for x in df['officer_last_name']:
       y=x.split(" ")[0].capitalize()
-      print(type(y))
       df['officer_last_name'] = df['officer_last_name'].replace([x],y)
 
     for x in df['officer_birth_year']:
@@ -180,8 +132,6 @@ def reconciliation():
         if x!='REDACTED':
             if int(x.split("-")[0])>2021:
                 d = datetime.datetime.strptime(x, "%Y-%m-%d")
-                print(1)
-                print(x,str(d.year-100)+'-'+str(d.month)+'-'+str(d.day))
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
     p('subject_birth_year')
     for x in df['subject_birth_year']:
@@ -205,10 +155,45 @@ def reconciliation():
             df['indoor_or_outdoor'] = df['indoor_or_outdoor'].replace([x], 'Indoor')
     p('indoor_or_outdoor')
 
+    df.to_csv('recon_output.csv')
+
+def integration():
+    trr_refresh = 'recon_output.csv'
+    data_officer = 'csv/postgres_public_data_officer.csv'
+
+    trr_df = pd.read_csv(trr_refresh)
+    officer_df = pd.read_csv(data_officer)
+
+    # trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial',
+    #                        'officer_appointed_date' : 'appointed_date'},inplace=True)
+    #
+    # trr_df.drop(['id'],axis=1,inplace=True)
+    #
+    # df3 = trr_df.merge(officer_df, how="left",on=['last_name', 'middle_initial', 'first_name'])
+    #
+    # print(df3.head())
+
+    trr_list = list()
+    officer_list = list()
+
+    for index,row in trr_df.iterrows():
+        ident = row['officer_first_name'] + row['officer_last_name'] + row['officer_appointed_date']
+        trr_list.append(ident)
+
+    for index,row in officer_df.iterrows():
+        ident = str(row['first_name']) + str(row['last_name']) + str(row['appointed_date'])
+        officer_list.append(ident)
+
+    trr_df['ident'] = trr_list
+    officer_df['ident'] = officer_list
+
+    print(officer_df['ident'])
 
 if __name__ == '__main__':
     # typecorrection()
     integration()
+    # reconciliation()
+
 
 
 
