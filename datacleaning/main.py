@@ -69,7 +69,7 @@ def typecorrection():
     convert_time(df3,to_timestamp3)
 
 # need to convert to csv
-# still with time issue 
+# still with time issue
 
 if __name__ == '__main__':
     typecorrection()
