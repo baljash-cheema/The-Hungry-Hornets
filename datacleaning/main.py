@@ -77,36 +77,44 @@ def integration():
     trr_refresh = 'csv/postgres_public_trr_trr_refresh.csv'
     data_officer = 'csv/postgres_public_data_officer.csv'
 
-    officer_list=[]
-    refresh_list=[]
+    trr_df = pd.read_csv(trr_refresh)
+    officer_df = pd.read_csv(data_officer)
 
-    with open(trr_refresh) as csvfile:
-        refresh_reader = csv.DictReader(csvfile)
+    trr_df.drop(['id'],axis=1,inplace=True)
 
-        for row in refresh_reader:
-            refresh_tuple = tuple()
-            year = row['officer_birth_year'][0:4]
-            refresh_tuple = (row['officer_last_name'].lower().strip(), row['officer_first_name'].lower().strip())
-            refresh_list.append(refresh_tuple)
+    df3 = pd.merge(trr_df, officer_df, how="left", left_on=['officer_first_name', 'officer_middle_initial', 'officer_last_name'],
+                   right_on=['first_name','middle_initial', 'last_name',])
 
-    with open(data_officer) as csvfile2:
-        officer_reader = csv.DictReader(csvfile2)
+    print(df3.head())
 
-        for all in officer_reader:
-            officer_tuple = tuple()
-            officer_tuple = ((all['last_name'].lower().strip(), all['first_name'].lower().strip()),all['id'])
-            officer_list.append(officer_tuple)
+    # officer_list=[]
+    # refresh_list=[]
 
-    id_list = list()
-
-    for each in refresh_list:
-        for all in officer_list:
-            if each == all[0]:
-                id_list.append((each,all[1]))
-
-    print(id_list)
-
-
+    # with open(trr_refresh) as csvfile:
+    #     refresh_reader = csv.DictReader(csvfile)
+    #
+    #     for row in refresh_reader:
+    #         refresh_tuple = tuple()
+    #         year = row['officer_birth_year'][0:4]
+    #         refresh_tuple = (row['officer_last_name'].lower().strip(), row['officer_first_name'].lower().strip())
+    #         refresh_list.append(refresh_tuple)
+    #
+    # with open(data_officer) as csvfile2:
+    #     officer_reader = csv.DictReader(csvfile2)
+    #
+    #     for all in officer_reader:
+    #         officer_tuple = tuple()
+    #         officer_tuple = ((all['last_name'].lower().strip(), all['first_name'].lower().strip()),all['id'])
+    #         officer_list.append(officer_tuple)
+    #
+    # id_list = list()
+    #
+    # for each in refresh_list:
+    #     for all in officer_list:
+    #         if each == all[0]:
+    #             id_list.append((each,all[1]))
+    #
+    # print(id_list)
 
 
     # for x in range(0, len(df1)):
