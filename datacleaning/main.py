@@ -73,7 +73,7 @@ def typecorrection(List):
     df3.to_csv('csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv')
 
 def reconciliation(List):
-    df = pd.read_csv(List[0])
+    df = pd.read_csv(List[0]).fillna(value='')
 
     def p(x):
       print(df[x].unique())
@@ -118,7 +118,10 @@ def reconciliation(List):
 
     p('officer_appointed_date')
     for x in df['officer_appointed_date']:
+        if x == '':
+            continue
         if x!='REDACTED':
+            print(x)
             if x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))!=4:
                 d=datetime.datetime.strptime(x,"%m-%d-%y")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
@@ -129,6 +132,8 @@ def reconciliation(List):
                 d = datetime.datetime.strptime(x, "%Y-%b-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
     for x in df['officer_appointed_date']:
+        if x == '':
+            continue
         if x!='REDACTED':
             if int(x.split("-")[0])>2021:
                 d = datetime.datetime.strptime(x, "%Y-%m-%d")
@@ -155,7 +160,7 @@ def reconciliation(List):
             df['indoor_or_outdoor'] = df['indoor_or_outdoor'].replace([x], 'Indoor')
     p('indoor_or_outdoor')
 
-    df.to_csv('csv/after_recon/postgres_public_trr_trr_refresh.csv')
+    # df.to_csv('csv/after_recon/postgres_public_trr_trr_refresh.csv')
 
     df = pd.read_csv(List[1])
     
@@ -194,7 +199,7 @@ def reconciliation(List):
             elif not x.split("-")[1].isnumeric():
                 d = datetime.datetime.strptime(x, "%Y-%b-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
-    
+
     for x in df['officer_appointed_date']:
         if x!='REDACTED':
             if int(x.split("-")[0])>2021:
@@ -203,7 +208,7 @@ def reconciliation(List):
                 print(x,str(d.year-100)+'-'+str(d.month)+'-'+str(d.day))
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
 
-    df.to_csv('csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
+    # df.to_csv('csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
 
 def integration(List):
     trr_df = pd.read_csv(List[0])
@@ -260,10 +265,10 @@ if __name__ == '__main__':
     # typecorrection(type_correct_list)
 
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
-    file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
+    file2 = 'csv/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
 
-    # reconciliation(recon_list)
+    reconciliation(recon_list)
 
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
