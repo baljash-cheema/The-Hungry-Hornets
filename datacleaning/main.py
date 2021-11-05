@@ -35,14 +35,10 @@ def convert_redact(df,list):
     
     return None
 
-def typecorrection():
-    file = 'csv/postgres_public_trr_trr_refresh.csv'
-    file2 = 'csv/postgres_public_trr_weapondischarge_refresh.csv'
-    file3 = 'csv/postgres_public_trr_trrstatus_refresh.csv'
-
-    df1 = pd.read_csv(file)
-    df2 = pd.read_csv(file2)
-    df3 = pd.read_csv(file3)
+def typecorrection(List):
+    df1 = pd.read_csv(List[0])
+    df2 = pd.read_csv(List[1])
+    df3 = pd.read_csv(List[2])
 
     to_bool1 = ["officer_on_duty","officer_injured", "officer_in_uniform", "subject_armed", "subject_injured",
                        "subject_alleged_injury","notify_oemc","notify_district_sergeant","notify_op_command",
@@ -72,9 +68,12 @@ def typecorrection():
     convert_time(df1,to_timestamp1)
     convert_time(df3,to_timestamp3)
 
-def reconciliation():
-    trr_refresh = 'csv/postgres_public_trr_trr_refresh.csv'
-    df = pd.read_csv(trr_refresh)
+    df1.to_csv('csv/after_typecorrection/postgres_public_trr_trr_refresh.csv')
+    df2.to_csv('csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv')
+    df3.to_csv('csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv')
+
+def reconciliation(List):
+    df = pd.read_csv(List[0])
 
     def p(x):
       print(df[x].unique())
@@ -156,9 +155,9 @@ def reconciliation():
             df['indoor_or_outdoor'] = df['indoor_or_outdoor'].replace([x], 'Indoor')
     p('indoor_or_outdoor')
 
-    df.to_csv('recon_output.csv')
+    df.to_csv('csv/after_recon/postgres_public_trr_trr_refresh.csv')
 
-    df = pd.read_csv("csv/postgres_public_trr_trrstatus_refresh.csv")
+    df = pd.read_csv(List[1])
     
     for x in df['officer_first_name']:
       y=x.split(" ")[0].capitalize()
@@ -204,12 +203,11 @@ def reconciliation():
                 print(x,str(d.year-100)+'-'+str(d.month)+'-'+str(d.day))
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
 
-def integration():
-    trr_refresh = 'recon_output.csv'
-    data_officer = 'csv/postgres_public_data_officer.csv'
+    df.to_csv('csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv')
 
-    trr_df = pd.read_csv(trr_refresh)
-    officer_df = pd.read_csv(data_officer)
+def integration():
+    trr_df = pd.read_csv(List[0])
+    officer_df = pd.read_csv(List[1])
 
     # trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial',
     #                        'officer_appointed_date' : 'appointed_date'},inplace=True)
@@ -250,13 +248,30 @@ def integration():
        'has_unique_name', 'created_at', 'updated_at']
 
     df3=df3.drop(dropped_tables, axis = 1)
-    print(df3['id'].isnull().sum())
-    df3.to_csv('merged.csv')
+    print(trr_df['officer_birth_year'].isnull().sum())
+    df3.to_csv('csv/after_integration/merged.csv')
 
 if __name__ == '__main__':
-    # typecorrection()
-    integration()
-    # reconciliation()
+    file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
+    file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
+    file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
+    type_correct_list = [file1,file2,file3]
+
+    typecorrection(type_correct_list)
+
+    file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
+    file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
+    recon_list = [file1,file2]
+
+    # reconciliation(recon_list)
+
+    file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
+    file2 = 'csv/original/postgres_public_data_officer.csv'
+    integration_list = [file1,file2]
+
+    # integration(integration_list)
+
+
 
 
 
