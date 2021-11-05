@@ -7,23 +7,32 @@ Our task here is to clean dirty data entered into the following trr tables:
 -trr_trrstatus_refresh
 -trr_weapondischarge_refresh
 
-For this assignment, we will be using OpenRefine, Python with the pandas package, and Datagrip to access the CPDP database. 
+For this assignment, we will be using DataGrip to access the CPDP database, OpenRefine, and Python with the pandas package. We will describe each step in detail.
 
-2.1 Type Correction 
-For this portion, our goal is to type correct certain columns within 3 of these tables:
+Step 1:
+Please download the following tables from DataGrip accessing the CPDP database and save as CSVs:
 
 1. trr_trr_refresh
-2. trr_weapondischarge_refresh
-3. trr_trrstatus_refresh
+2. trr_trr_actionresponse_refresh
+3. trr_charge_refresh
+4. trr_subjectweapon_refresh
+5. trr_trrstatus_refresh
+6. trr_weapondischarge_refresh
+7. data_officer
 
-We first access the CPDP database using OpenRefine.  
+Each of these files is saved as postgres_public_ followed by the table name, finished with .csv in our csv/original directory. Please maintain this naming convention. 
 
-For trr_trr_refresh and trr_treestatus_refresh, please load the table and run the JSON file associated with each. 
+Example: 'postgres_public_data_officer.csv'
 
-Next, export all 3 tables (trr_weapondischarge_refresh left in its original form), to CSVs.
+Step 2:
+'postgres_public_trr_trr_refresh.csv' and 'postgres_public_trr_trrstatus_refresh.csv' are run through OpenRefine using the JSON files under the src directory named after the table they correspond to. The output is saved as a CSV named the same as the original under csv/after_openrefine. 
 
-These CSVs are then to be loaded in Python as file1 (trr_trr_refresh), file2 (trr_weapondischarge_refresh), and file3 (trr_trrstatus_refresh).
+Step 3:
+Run main.py. It will pull in CSV files from csv/original and csv/after_openrefine and run them through various functions designed to clean the data. As the files move through each function, they will be output to a directory corresponding to the action that was just taken on them. For example, they will move to csv/after_typecorrection after the typecorrection function is called. 
 
-Please execute the provided Python file. This will output the 3 corrected tables for this component of the assignment. 
+Step 4;
+The final CSVs will be found under the output directory within the main directory. 
+
+
 
 
