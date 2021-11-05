@@ -248,7 +248,7 @@ def integration(List):
        'has_unique_name', 'created_at', 'updated_at']
 
     df3=df3.drop(dropped_tables, axis = 1)
-    print(trr_df['officer_birth_year'].isnull().sum())
+    print(df3['id'].isnull().sum())
     df3.to_csv('csv/after_integration/merged.csv')
 
 if __name__ == '__main__':
@@ -259,7 +259,7 @@ if __name__ == '__main__':
 
     # typecorrection(type_correct_list)
 
-    file1 = 'csv/original/postgres_public_trr_trr_refresh.csv'
+    file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
 
