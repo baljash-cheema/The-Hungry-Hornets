@@ -6,14 +6,30 @@
   <component name="ChangeListManager">
     <list default="true" id="3f2aa215-1b3d-42dd-b901-7527e0a026d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/README" beforeDir="false" afterPath="$PROJECT_DIR$/datacleaning/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/data_integration" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/integration.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/merged.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/recon_output.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/trr_trr_refresh_JSON" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/trr_trrstatus_refresh_JSON" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/after_integration/merged.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/after_openrefine/postgres_public_trr_trr_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/after_recon/postgres_public_trr_trr_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/after_typecorrection/postgres_public_trr_trr_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/original/postgres_public_data_officer.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/original/postgres_public_trr_actionresponse_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/original/postgres_public_trr_charge_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/original/postgres_public_trr_subjectweapon_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/original/postgres_public_trr_trr_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/original/postgres_public_trr_trrstatus_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/original/postgres_public_trr_weapondischarge_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/postgres_public_data_officer.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/postgres_public_trr_actionresponse_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/postgres_public_trr_charge_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/postgres_public_trr_subjectweapon_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/postgres_public_trr_trr_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/postgres_public_trr_trrstatus_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/postgres_public_trr_weapondischarge_refresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/statusrefresh.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/csv/trr_refresh.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +62,29 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main (1)">
+    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="The-Hungry-Hornets" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/datacleaning/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/datacleaning/src/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="The-Hungry-Hornets" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -71,6 +109,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (1)" />
         <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
@@ -94,6 +133,7 @@
       <workItem from="1636053250288" duration="9166000" />
       <workItem from="1636138576615" duration="5824000" />
       <workItem from="1636145798381" duration="4204000" />
+      <workItem from="1636153410647" duration="66000" />
     </task>
     <servers />
   </component>
@@ -114,5 +154,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/main_py$main.coverage" NAME="main Coverage Results" MODIFIED="1636153377980" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/datacleaning" />
+    <SUITE FILE_PATH="coverage/main_py$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1636153419080" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/datacleaning/src" />
   </component>
 </project>
