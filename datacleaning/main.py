@@ -79,6 +79,7 @@ def reconciliation():
     def p(x):
       print(df[x].unique())
       print(df[x].isna().sum())
+
     for x in df['officer_first_name']:
       y=x.split(" ")[0].capitalize()
       df['officer_first_name'] = df['officer_first_name'].replace([x],y)
@@ -157,7 +158,7 @@ def reconciliation():
 
     df.to_csv('recon_output.csv')
 
-    df = pd.read_csv("sv/postgres_public_trr_trrstatus_refresh.csv")
+    df = pd.read_csv("csv/postgres_public_trr_trrstatus_refresh.csv")
     
     for x in df['officer_first_name']:
       y=x.split(" ")[0].capitalize()
@@ -165,12 +166,10 @@ def reconciliation():
 
     for x in df['officer_last_name']:
       y=x.split(" ")[0].capitalize()
-      count = count + 1
       df['officer_last_name'] = df['officer_last_name'].replace([x],y)
 
     for x in df['officer_birth_year']:
       if not np.isnan(x):
-        count = count + 1
         df['officer_birth_year'] = df['officer_birth_year'].replace([x], int(x))
 
     for x in df['officer_race']:
@@ -251,19 +250,13 @@ def integration():
        'has_unique_name', 'created_at', 'updated_at']
 
     df3=df3.drop(dropped_tables, axis = 1)
-    print(df3.columns)
+    print(df3['id'].isnull().sum())
     df3.to_csv('merged.csv')
 
 if __name__ == '__main__':
     # typecorrection()
     integration()
     # reconciliation()
-
-
-
-
-
-
 
 
 
