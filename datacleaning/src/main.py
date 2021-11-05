@@ -263,17 +263,17 @@ if __name__ == '__main__':
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1,file2,file3]
-    # typecorrection(type_correct_list)
+    typecorrection(type_correct_list)
 
     #Reconciliation
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
-    # reconciliation(recon_list)
+    reconciliation(recon_list)
 
     #Redact correction
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
-    file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh'
+    file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
     redact_list = [file1,file2,file3]
     redact(redact_list)

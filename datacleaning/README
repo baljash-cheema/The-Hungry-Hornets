@@ -20,7 +20,7 @@ Please download the following tables from DataGrip accessing the CPDP database a
 6. trr_weapondischarge_refresh
 7. data_officer
 
-Each of these files is saved as postgres_public_ followed by the table name, finished with .csv in our csv/original directory. Please maintain this naming convention. 
+Each of these files is saved as postgres_public_ followed by the table name, finished with .csv in our src/csv/original directory. Please maintain this naming convention. 
 
 Example: 'postgres_public_data_officer.csv'
 
