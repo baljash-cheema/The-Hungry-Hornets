@@ -45,7 +45,7 @@ def typecorrection(List):
                        "notify_det_division"]
     to_bool2 = ['firearm_reloaded', 'sight_used']
 
-    to_timestamp1 = ['trr_datetime', 'officer_appointed_date', 'trr_created']
+    to_timestamp1 = ['trr_datetime', 'trr_created']
     to_timestamp3 = ['status_datetime']
 
     to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
