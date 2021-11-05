@@ -157,6 +157,54 @@ def reconciliation():
 
     df.to_csv('recon_output.csv')
 
+    df = pd.read_csv("sv/postgres_public_trr_trrstatus_refresh.csv")
+    
+    for x in df['officer_first_name']:
+      y=x.split(" ")[0].capitalize()
+      df['officer_first_name'] = df['officer_first_name'].replace([x],y)
+
+    for x in df['officer_last_name']:
+      y=x.split(" ")[0].capitalize()
+      count = count + 1
+      df['officer_last_name'] = df['officer_last_name'].replace([x],y)
+
+    for x in df['officer_birth_year']:
+      if not np.isnan(x):
+        count = count + 1
+        df['officer_birth_year'] = df['officer_birth_year'].replace([x], int(x))
+
+    for x in df['officer_race']:
+      if x=='UNKNOWN':
+        df['officer_race'] = df['officer_race'].replace([x], np.nan)
+      if x=='AMER IND/ALASKAN NATIVE':
+        df['officer_race'] = df['officer_race'].replace([x], 'NATIVE AMERICAN/ALASKAN NATIVE')
+
+    for x in df['officer_gender']:
+      if x=='MALE':
+        df['officer_gender'] = df['officer_gender'].replace([x], 'M')
+      if x=='FEMALE':
+        df['officer_gender'] = df['officer_gender'].replace([x], 'F')
+
+    for x in df['officer_appointed_date']:
+        if x!='REDACTED':
+            if x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))!=4:
+                d=datetime.datetime.strptime(x,"%m-%d-%y")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+            elif x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))==4:
+                d=datetime.datetime.strptime(x,"%Y-%m-%d")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+            elif not x.split("-")[1].isnumeric():
+                d = datetime.datetime.strptime(x, "%Y-%b-%d")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+    
+    for x in df['officer_appointed_date']:
+        if x!='REDACTED':
+            if int(x.split("-")[0])>2021:
+                d = datetime.datetime.strptime(x, "%Y-%m-%d")
+                print(1)
+                print(x,str(d.year-100)+'-'+str(d.month)+'-'+str(d.day))
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
+
 def integration():
     trr_refresh = 'recon_output.csv'
     data_officer = 'csv/postgres_public_data_officer.csv'
@@ -191,22 +239,20 @@ def integration():
 
     df3 = trr_df.merge(officer_df, how="left",on=['ident'])
 
-    print(df3['id'].isnull().sum())
+    dropped_tables = ['ident', 'gender', 'race', 'appointed_date', 'rank', 'active', \
+       'birth_year', 'first_name', 'last_name', 'tags', 'middle_initial', \
+       'suffix_name', 'resignation_date', 'complaint_percentile', \
+       'middle_initial2', 'civilian_allegation_percentile', \
+       'honorable_mention_percentile', 'internal_allegation_percentile', \
+       'trr_percentile', 'allegation_count', 'sustained_count', \
+       'civilian_compliment_count', 'current_badge', 'current_salary', \
+       'discipline_count', 'honorable_mention_count', 'last_unit_id', \
+       'major_award_count', 'trr_count', 'unsustained_count', \
+       'has_unique_name', 'created_at', 'updated_at']
 
-    print(trr_df['officer_first_name'].isnull().sum())
-    print(trr_df['officer_last_name'].isnull().sum())
-    print(trr_df['officer_appointed_date'].isnull().sum())
-    print(trr_df['officer_birth_year'].isnull().sum())
-
-    print(officer_df['first_name'].isnull().sum())
-    print(officer_df['last_name'].isnull().sum())
-    print(officer_df['appointed_date'].isnull().sum())
-    print(officer_df['birth_year'].isnull().sum())
-
-    # print(df3['id'].isnull().sum())
-    # print(officer_df['appointed_date'].isnull().sum())
-    #
-    # df3.to_csv('integration.csv')
+    df3=df3.drop(dropped_tables, axis = 1)
+    print(df3.columns)
+    df3.to_csv('merged.csv')
 
 if __name__ == '__main__':
     # typecorrection()
