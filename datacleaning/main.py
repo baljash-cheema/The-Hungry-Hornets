@@ -73,7 +73,7 @@ def typecorrection(List):
     df3.to_csv('csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv')
 
 def reconciliation(List):
-    df = pd.read_csv(List[0]).fillna(value='')
+    df = pd.read_csv(List[0])
 
     def p(x):
       print(df[x].unique())
@@ -118,9 +118,7 @@ def reconciliation(List):
 
     p('officer_appointed_date')
     for x in df['officer_appointed_date']:
-        if x == '':
-            continue
-        if x!='REDACTED':
+        if x != 'REDACTED' and x != np.isnan(x):
             print(x)
             if x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))!=4:
                 d=datetime.datetime.strptime(x,"%m-%d-%y")
@@ -132,9 +130,7 @@ def reconciliation(List):
                 d = datetime.datetime.strptime(x, "%Y-%b-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
     for x in df['officer_appointed_date']:
-        if x == '':
-            continue
-        if x!='REDACTED':
+        if x != 'REDACTED' and x != np.isnan(x):
             if int(x.split("-")[0])>2021:
                 d = datetime.datetime.strptime(x, "%Y-%m-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
