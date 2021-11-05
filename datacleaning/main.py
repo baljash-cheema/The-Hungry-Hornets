@@ -257,9 +257,9 @@ if __name__ == '__main__':
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1,file2,file3]
 
-    typecorrection(type_correct_list)
+    # typecorrection(type_correct_list)
 
-    file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
+    file1 = 'csv/original/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
 
