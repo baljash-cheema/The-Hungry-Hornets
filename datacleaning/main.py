@@ -118,7 +118,7 @@ def reconciliation(List):
 
     p('officer_appointed_date')
     for x in df['officer_appointed_date']:
-        if x != 'REDACTED' and x != np.isnan(x):
+        if x != 'REDACTED':
             print(x)
             if x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))!=4:
                 d=datetime.datetime.strptime(x,"%m-%d-%y")
@@ -130,7 +130,7 @@ def reconciliation(List):
                 d = datetime.datetime.strptime(x, "%Y-%b-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
     for x in df['officer_appointed_date']:
-        if x != 'REDACTED' and x != np.isnan(x):
+        if x != 'REDACTED':
             if int(x.split("-")[0])>2021:
                 d = datetime.datetime.strptime(x, "%Y-%m-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
