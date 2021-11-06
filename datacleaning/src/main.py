@@ -226,7 +226,34 @@ def integration(List):
 
     id = 'id'
     count = 0
+    
+   for row in sorted(trr_df.index):
+        if row % 100 == 0:
+            print(f'On row {row}')
+        trr_first_name = trr_df.loc[row]['first_name']
+        trr_last_name = trr_df.loc[row]['last_name']
+        trr_appointed_date = trr_df.loc[row]['appointed_date']
+        officer_rows = officer_df.loc[(officer_df['first_name']==trr_first_name) & (officer_df['last_name']==trr_last_name) & (officer_df['appointed_date']==trr_appointed_date)]
+        #officer_rows = officer_df.query(f'first_name={trr_first_name} and last_name={trr_last_name} and appointed_date={trr_appointed_date}')
+        #if officer_rows.shape[1] > 0:
+        #print(officer_rows.shape[0])
+        try:#if officer_rows.shape[0] > 0:
+            trr_df.loc[row]['first_name'] = officer_rows[0]['first_name']
+            trr_df.loc[row]['last_name'] = officer_rows[0]['last_name']
+            trr_df.loc[row]['appointed_date'] = officer_rows[0]['appointed_date']
+            continue
+        except Exception:
+            pass
 
+        officer_rows = officer_df.loc[((officer_df['first_name']==trr_first_name) & (officer_df['last_name']==trr_last_name)) | ((officer_df['first_name']==trr_first_name) & (officer_df['appointed_date']==trr_appointed_date)) | ((officer_df['last_name']==trr_last_name) & (officer_df['appointed_date']==trr_appointed_date))]
+        try:  # if officer_rows.shape[0] > 0:
+            trr_df.loc[row]['first_name'] = officer_rows[0]['first_name']
+            trr_df.loc[row]['last_name'] = officer_rows[0]['last_name']
+            trr_df.loc[row]['appointed_date'] = officer_rows[0]['appointed_date']
+            continue
+        except Exception:
+            pass
+        
     for row in trr_df.index:
         match_options = trr_df.loc[row][match_on]
         for row2 in officer_df.index:
