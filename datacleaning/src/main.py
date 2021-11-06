@@ -208,54 +208,115 @@ def redact(List):
         df3[each].replace({"REDACTED": None}, inplace=True)
 
     df1.to_csv('csv/after_redact/postgres_public_trr_trr_refresh.csv')
-    df2.to_csv('csv/after_redact/postgres_public_trr_weapondischarge_refresh')
+    df2.to_csv('csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
     df3.to_csv('csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
 
 def integration(List):
     trr_df = pd.read_csv(List[0])
     officer_df = pd.read_csv(List[1])
+    trr_status_df = pd.read_csv(List[2])
 
-    # trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial',
-    #                        'officer_appointed_date' : 'appointed_date'},inplace=True)
-    #
-    # trr_df.drop(['id'],axis=1,inplace=True)
-    #
-    # df3 = trr_df.merge(officer_df, how="left",on=['last_name', 'middle_initial', 'first_name'])
-    #
-    # print(df3.head())
+    trr_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial',
+                           'officer_appointed_date' : 'appointed_date'},inplace=True)
 
-    trr_df.drop(['id'],axis=1,inplace=True)
+    trr_status_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial',
+                           'officer_appointed_date' : 'appointed_date'},inplace=True)
 
-    trr_list = list()
-    officer_list = list()
+    match_on = ['last_name', 'first_name', 'appointed_date']
 
-    for index,row in trr_df.iterrows():
-        ident = row['officer_first_name'] + row['officer_last_name'] + row['officer_appointed_date']
-        trr_list.append(ident)
+    id = 'id'
+    count = 0
+    
+   for row in sorted(trr_df.index):
+        if row % 100 == 0:
+            print(f'On row {row}')
+        trr_first_name = trr_df.loc[row]['first_name']
+        trr_last_name = trr_df.loc[row]['last_name']
+        trr_appointed_date = trr_df.loc[row]['appointed_date']
+        officer_rows = officer_df.loc[(officer_df['first_name']==trr_first_name) & (officer_df['last_name']==trr_last_name) & (officer_df['appointed_date']==trr_appointed_date)]
+        #officer_rows = officer_df.query(f'first_name={trr_first_name} and last_name={trr_last_name} and appointed_date={trr_appointed_date}')
+        #if officer_rows.shape[1] > 0:
+        #print(officer_rows.shape[0])
+        try:#if officer_rows.shape[0] > 0:
+            trr_df.loc[row]['first_name'] = officer_rows[0]['first_name']
+            trr_df.loc[row]['last_name'] = officer_rows[0]['last_name']
+            trr_df.loc[row]['appointed_date'] = officer_rows[0]['appointed_date']
+            continue
+        except Exception:
+            pass
 
-    for index,row in officer_df.iterrows():
-        ident = str(row['first_name']) + str(row['last_name']) + str(row['appointed_date'])
-        officer_list.append(ident)
+        officer_rows = officer_df.loc[((officer_df['first_name']==trr_first_name) & (officer_df['last_name']==trr_last_name)) | ((officer_df['first_name']==trr_first_name) & (officer_df['appointed_date']==trr_appointed_date)) | ((officer_df['last_name']==trr_last_name) & (officer_df['appointed_date']==trr_appointed_date))]
+        try:  # if officer_rows.shape[0] > 0:
+            trr_df.loc[row]['first_name'] = officer_rows[0]['first_name']
+            trr_df.loc[row]['last_name'] = officer_rows[0]['last_name']
+            trr_df.loc[row]['appointed_date'] = officer_rows[0]['appointed_date']
+            continue
+        except Exception:
+            pass
+        
+    for row in trr_df.index:
+        match_options = trr_df.loc[row][match_on]
+        for row2 in officer_df.index:
+            comp_vals = officer_df.loc[row2][match_on]
+            match_total = sum([match_options[i] == comp_vals[i] for i in match_on])
+            if match_total == 2:
+                trr_df.loc[row,id] = officer_df.loc[row2,id]
+                # print(trr_df.loc[row,id])
+                break
+            elif match_total == 1:
+                trr_df.loc[row,id] = officer_df.loc[row2,id]
+                # print(trr_df.loc[row,id])
+            # elif match_total == 2:
+            #     trr_df.loc[row,id] = officer_df.loc[row2,id]
+            #     # print(trr_df.loc[row,id])
+            # elif match_total == 1:
+            #     trr_df.loc[row,id] = officer_df.loc[row2,id]
+            #     # print(trr_df.loc[row,id])
+        count = count + 1
+        print(count)
+        print(trr_df.shape)
 
-    trr_df['ident'] = trr_list
-    officer_df['ident'] = officer_list
+        if count % 100 == 0:
+            trr_df.to_csv('csv/after_integration/merged.csv')
+            new_df = trr_df.copy()
+            dropped_tables = ['gender', 'race', 'appointed_date', 'rank', 'active', \
+               'birth_year', 'first_name', 'last_name', 'tags', 'middle_initial', \
+               'suffix_name', 'resignation_date', 'complaint_percentile', \
+               'middle_initial2', 'civilian_allegation_percentile', \
+               'honorable_mention_percentile', 'internal_allegation_percentile', \
+               'trr_percentile', 'allegation_count', 'sustained_count', \
+               'civilian_compliment_count', 'current_badge', 'current_salary', \
+               'discipline_count', 'honorable_mention_count', 'last_unit_id', \
+               'major_award_count', 'trr_count', 'unsustained_count', \
+               'has_unique_name', 'created_at', 'updated_at']
 
-    df3 = trr_df.merge(officer_df, how="left",on=['ident'])
+            new_df=new_df.drop(dropped_tables, axis = 1)
+            new_df.to_csv('csv/output/out.csv')
 
-    dropped_tables = ['ident', 'gender', 'race', 'appointed_date', 'rank', 'active', \
-       'birth_year', 'first_name', 'last_name', 'tags', 'middle_initial', \
-       'suffix_name', 'resignation_date', 'complaint_percentile', \
-       'middle_initial2', 'civilian_allegation_percentile', \
-       'honorable_mention_percentile', 'internal_allegation_percentile', \
-       'trr_percentile', 'allegation_count', 'sustained_count', \
-       'civilian_compliment_count', 'current_badge', 'current_salary', \
-       'discipline_count', 'honorable_mention_count', 'last_unit_id', \
-       'major_award_count', 'trr_count', 'unsustained_count', \
-       'has_unique_name', 'created_at', 'updated_at']
 
-    df3=df3.drop(dropped_tables, axis = 1)
-    print(df3['id'].isnull().sum())
-    df3.to_csv('csv/after_integration/merged.csv')
+
+'''
+    for row in trr_status_df.index:
+        match_options = trr_status_df.loc[row][match_on]
+        for row2 in officer_df.index:
+            comp_vals = officer_df.loc[row2][match_on]
+            match_total = sum([match_options[i] == comp_vals[i] for i in match_on])
+            if match_total == 3:
+                trr_status_df.loc[row,id] = officer_df.loc[row2,id]
+                # print(trr_df.loc[row,id])
+                break
+            elif match_total == 2:
+                trr_status_df.loc[row, id] = officer_df.loc[row2, id]
+                # print(trr_df.loc[row,id])
+            elif match_total == 1:
+                trr_status_df.loc[row, id] = officer_df.loc[row2, id]
+                # print(trr_df.loc[row,id])
+'''
+
+
+
+
+
 
 if __name__ == '__main__':
     #Type correct after OpenRefine
@@ -263,26 +324,31 @@ if __name__ == '__main__':
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1,file2,file3]
-    typecorrection(type_correct_list)
+    # typecorrection(type_correct_list)
 
     #Reconciliation
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
-    reconciliation(recon_list)
+    # reconciliation(recon_list)
 
     #Redact correction
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
     redact_list = [file1,file2,file3]
-    redact(redact_list)
+    # redact(redact_list)
 
     #Integration
     file1 = 'csv/after_redact/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
-    integration_list = [file1,file2]
-    # integration(integration_list)
+    file3 = 'csv/after_redact/postgres_public_trr_trrstatus_refresh.csv'
+    integration_list = [file1,file2,file3]
+    integration(integration_list)
+
+    file = 'postgres_public_trr_subjectweapon_refresh.csv'
+    subjectweapon_df = pd.read_csv(file)
+    subjectweapon_df.to_csv('csv/output/postgres_public_trr_subjectweapon_refresh.csv')
 
 
 
