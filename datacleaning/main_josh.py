@@ -270,6 +270,57 @@ def integration(List):
     final_trr_cleaned = df_trr.reset_index(drop=True)
     final_trr_cleaned.to_csv('src/csv/after_integration/merged.csv')
 
+
+def integration2(List):
+    pass
+
+def column_match_score(df, col_criteria_dict):
+    def column_match_score(df, col_criteria_dict):
+        '''
+        returns a Series containing a score based on the number of criterea that match in col.
+        Higher score for a given row means a higher numbers of criterea matched
+        :param df: input dataframe
+        :param col_criteria_dict: dictionary in format {col_name1:criteria1, ...} for the criteria to match the columns
+        :return: Series with an entry for every row in df, containing a score
+        '''
+
+        # create a dataframe to hold True/False values for each row in df, and for each column we
+        # are matching
+        bool_df = df.copy()[col_criteria_dict.keys()]  # initialise
+        for col in col_criteria_dict.keys():
+            bool_df[col] = (df[col] == col_criteria_dict[col])  # fill column with True/False depending
+        scores = bool_df.sum(axis=1)  # sum the bools across each row to get a score
+        return scores
+
+def concatIF(df1, df2, columns_to_match, lim=1,
+             columns=[]):
+    '''
+
+    :param df1: dataframe 1
+    :param df2: dataframe 2
+    :param columns_to_match: list of columns to determine which rows in df1 match df2
+    :param lim: we'll only match rows with scores greater than 'lim'
+    :param columns: columns to use in df2
+    :return: dataframe  with rows: df1.index
+                        and columns: (df1.columns + df2.columns)
+    '''
+
+    df_to_add = pd.DataFrame(0, index=df1.index, columns=df2.columns)  # initialise with scores of zero
+    for row in df1.index:
+        col_criteria_dict = {col: df1.loc[row, col] for col in columns_to_match}
+        df2scores = column_match_score(df2, col_criteria_dict)
+        max_score = df2scores.max()
+        if max_score >= lim:
+            df2_matching_row = df2.loc[df2scores.idxmax()]  # index the maximum scoring row in df2
+            df_to_add.loc[row] = df2_matching_row
+        else:
+            pass
+
+    if columns == []:  # if not specified, use all the columns
+        columns = df2.columns
+
+    return pd.concat([df1, df_to_add[columns]], axis=1)
+
 if __name__ == '__main__':
     #Type correct after OpenRefine
     file1 = 'src/csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
@@ -295,13 +346,21 @@ if __name__ == '__main__':
     file1 = 'src/csv/after_redact/postgres_public_trr_trr_refresh.csv'
     file2 = 'src/csv/original/postgres_public_data_officer.csv'
     file3 = 'src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv'
-    integration_list = [file1,file2,file3]
-    integration(integration_list)
+    # integration_list = [file1,file2,file3]
+    # integration(integration_list)
 
     file = 'src/csv/postgres_public_trr_subjectweapon_refresh.csv'
     # subjectweapon_df = pd.read_csv(file)
     # subjectweapon_df.to_csv('src/csv/output/postgres_public_trr_subjectweapon_refresh.csv')
 
 
+    file1 = 'src/csv/after_redact/postgres_public_trr_trr_refresh.csv'
+    trr_df = pd.read_csv(file1)
+    file2 = 'src/csv/original/postgres_public_data_officer.csv'
+    officer_df = pd.read_csv(file2)
+
+    criteria = dict()
+    criteria['officer_last_name'] = 'last_name'
 
 
+    output = column_match_score(trr_df,criteria)
