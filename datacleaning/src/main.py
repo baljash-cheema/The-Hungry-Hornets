@@ -331,7 +331,7 @@ if __name__ == '__main__':
     # redact_list = [file1,file2,file3]
 
     #Integration next
-    file1 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
+    file1 = 'csv/after_recon/trr_status_0.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     integration_list = [file1, file2]
 
