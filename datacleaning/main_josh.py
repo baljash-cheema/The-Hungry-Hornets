@@ -307,9 +307,7 @@ def integration(List):
     final_trr_status_cleaned = final_trr_cleaned[['officer_rank', 'officer_star', 'status', 'status_datetime', 'officer_age', 'officer_unit_at_incident',
         'trr_report_id']]
 
-    print(final_trr_cleaned['id'].value_counts())
-
-    final_trr_cleaned.to_csv('merge2.csv')
+    final_trr_status_cleaned.to_csv('merge2.csv')
 
 def integration2(List):
     pass
