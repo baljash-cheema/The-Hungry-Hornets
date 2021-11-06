@@ -191,7 +191,50 @@ def reconciliation(List):
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
 
     # df.to_csv('src/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
+    df = pd.read_csv("csv/original/postgres_public_trr_trrstatus_refresh.csv")
 
+    for x in df['officer_first_name']:
+      y=x.split(" ")[0].capitalize()
+      df['officer_first_name'] = df['officer_first_name'].replace([x],y)
+    print(df['officer_first_name'])
+
+    for x in df['officer_last_name']:
+      y=x.split(" ")[0].capitalize()
+      df['officer_last_name'] = df['officer_last_name'].replace([x],y)
+    print(df['officer_last_name'])
+
+    for x in df['officer_race']:
+      y=x.split(" ")[0].capitalize()
+      df['officer_race'] = df['officer_race'].replace([x],y)
+    print(df['officer_last_name'])
+
+    for x in df['officer_appointed_date']:
+        if x!='REDACTED':
+            print(x)
+            if x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))!=4:
+                d=datetime.datetime.strptime(x,"%m-%d-%y")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+            elif x.split("-")[1].isnumeric() and len(str(x.split("-")[0]))==4:
+                d=datetime.datetime.strptime(x,"%Y-%m-%d")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+            elif not x.split("-")[1].isnumeric():
+                d = datetime.datetime.strptime(x, "%Y-%b-%d")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+    for x in df['officer_appointed_date']:
+        if x!='REDACTED':
+            if int(x.split("-")[0])>2021:
+                d = datetime.datetime.strptime(x, "%Y-%m-%d")
+                df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
+
+    for x in df['officer_race']:
+      if x=='UNKNOWN':
+        df['officer_race'] = df['officer_race'].replace([x], np.nan)
+      if x=='AMER IND/ALASKAN NATIVE':
+        df['officer_race'] = df['officer_race'].replace([x], 'Native American/alaskan Native')
+      y=x.split(" ")[0].capitalize()
+      df['officer_race'] = df['officer_race'].replace([x],y)
+
+    df.to_csv('trr_status_0.csv')
 def redact(List):
 
     df1 = pd.read_csv(List[0])
@@ -222,33 +265,32 @@ def redact(List):
     df3.to_csv('src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
 
 def integration(List):
+
     trr_df = pd.read_csv(List[0])
     officer_df = pd.read_csv(List[1])
     
     trr_df['officer_appointed_date'].replace({'REDACTED': None},inplace =True)
     trr_df['officer_appointed_date']= pd.to_datetime(trr_df['officer_appointed_date']).dt.date
 
-    df = pd.merge(trr_df, officer_df,  how='left', left_on=['officer_first_name','officer_middle_initial','officer_last_name','officer_appointed_date','officer_birth_year','officer_gender','officer_race'],
-                  right_on = ['first_name','middle_initial','last_name','appointed_date','birth_year','gender','race']).fillna("None")
+    df = pd.merge(trr_df, officer_df,  how='left', left_on=['officer_first_name','officer_middle_initial','officer_last_name','officer_middle_initial','officer_appointed_date','officer_birth_year','officer_gender','officer_race'],
+                  right_on = ['first_name','middle_initial','last_name','suffix_name','appointed_date','birth_year','gender','race']).fillna("None")
     df6 = df[df['id'] != 'None'].reset_index(drop=True)
     df4 = df[df['id'] == 'None'][trr_df.columns.values.tolist()].reset_index(drop=True)
     df4['officer_birth_year'] = df4['officer_birth_year'].apply(pd.to_numeric, errors='coerce')
 
-
     df1 = pd.merge(df4, officer_df, how='left',
-                       left_on=['officer_first_name', 'officer_race', 'officer_last_name', 'officer_appointed_date', 'officer_birth_year', 'officer_gender'],
-                       right_on=['first_name', 'race', 'last_name', 'appointed_date', 'birth_year',
-                                 'gender']).fillna("None")
+                      left_on=['officer_first_name', 'officer_race', 'officer_last_name', 'officer_appointed_date', 'officer_birth_year', 'officer_gender'],
+                      right_on=['first_name', 'race', 'last_name', 'appointed_date', 'birth_year',
+                                'gender']).fillna("None")
 
-    print(df1)
     df6 = df1[df1['id'] != 'None'].reset_index(drop=True)
     df4 = df1[df1['id'] == 'None'][trr_df.columns.values.tolist()].reset_index(drop=True)
 
     df4['officer_birth_year'] = df4['officer_birth_year'].apply(pd.to_numeric, errors='coerce')
 
     df2 = pd.merge(df4, officer_df, how='left',
-                       left_on=['officer_first_name', 'officer_race', 'officer_last_name', 'officer_birth_year', 'officer_gender'],
-                       right_on=['first_name', 'race', 'last_name', 'birth_year', 'gender']).fillna("None")
+                      left_on=['officer_first_name', 'officer_race', 'officer_last_name', 'officer_birth_year', 'officer_gender'],
+                      right_on=['first_name', 'race', 'last_name', 'birth_year', 'gender']).fillna("None")
     print(df2.columns)
     p3 = df2[df2['id'] != 'None'].reset_index(drop=True)
     no_p3 = df2[df2['id'] == 'None'][trr_df.columns.values.tolist()].reset_index(drop=True)
@@ -256,20 +298,18 @@ def integration(List):
     no_p3['officer_birth_year'] = no_p3['officer_birth_year'].apply(pd.to_numeric, errors='coerce')
 
     df3 = pd.merge(no_p3, officer_df, how='left', left_on=['officer_first_name', 'officer_race', 'officer_last_name', 'officer_gender'],
-                       right_on=['first_name', 'race', 'last_name', 'gender']).fillna("None")
+                      right_on=['first_name', 'race', 'last_name', 'gender']).fillna("None")
 
     p4 = df3[df3['id'] != 'None'].reset_index(drop=True)
     p5 = df3[df3['id'] == 'None'].reset_index(drop=True)
 
-    df_trr = pd.concat([df6, df6, p3, p4, p5])
+    final_trr_cleaned = pd.concat([df6, df6, p3, p4, p5])
+    final_trr_status_cleaned = final_trr_cleaned[['officer_rank', 'officer_star', 'status', 'status_datetime', 'officer_age', 'officer_unit_at_incident',
+        'trr_report_id']]
 
-    print(df_trr['id'].value_counts())
+    print(final_trr_cleaned['id'].value_counts())
 
-    df_trr.to_csv('merge2.csv')
-
-    final_trr_cleaned = df_trr.reset_index(drop=True)
-    final_trr_cleaned.to_csv('src/csv/after_integration/merged.csv')
-
+    final_trr_cleaned.to_csv('merge2.csv')
 
 def integration2(List):
     pass
