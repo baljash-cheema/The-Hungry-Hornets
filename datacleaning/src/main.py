@@ -261,7 +261,7 @@ def integration(List):
 
     final_trr_cleaned = pd.concat([df6, df6, p3, p4, p5])
     final_trr_status_cleaned = final_trr_cleaned[['officer_rank', 'officer_star', 'status', 'status_datetime', 'officer_age', 'officer_unit_at_incident',
-        'trr_report_id']]
+        'trr_report_id','id']]
 
     final_trr_status_cleaned.to_csv('merge2.csv')
 
