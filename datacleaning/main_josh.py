@@ -25,16 +25,6 @@ def convert_time(df,list):
 
     return None
 
-def convert_redact(df,list):
-    '''
-    Takes a list of strings that are column headers, iterates through them and converts any "redacted" entries to null.
-    '''
-    
-    for each in list:
-        df[each].replace({"REDACTED": None}, inplace=True)
-    
-    return None
-
 def typecorrection(List):
     df1 = pd.read_csv(List[0])
     df2 = pd.read_csv(List[1])
@@ -57,10 +47,6 @@ def typecorrection(List):
                 'trr_created']
     to_null2 = ['firearm_reloaded', 'sight_used']
     to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
-
-    convert_redact(df1,to_null1)
-    convert_redact(df2,to_null2)
-    convert_redact(df3,to_null3)
 
     convert_bool(df1,to_bool1)
     convert_bool(df2,to_bool2)
@@ -206,6 +192,35 @@ def reconciliation(List):
 
     # df.to_csv('src/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
 
+def redact(List):
+
+    df1 = pd.read_csv(List[0])
+    df2 = pd.read_csv(List[1])
+    df3 = pd.read_csv(List[2])
+
+    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
+                'officer_on_duty',
+                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
+                'subject_injured',
+                'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
+                'notify_det_division',
+                'trr_created']
+    to_null2 = ['firearm_reloaded', 'sight_used']
+    to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
+
+    for each in to_null1:
+        df1[each].replace({"REDACTED": None}, inplace=True)
+
+    for each in to_null2:
+        df2[each].replace({"REDACTED": None}, inplace=True)
+
+    for each in to_null3:
+        df3[each].replace({"REDACTED": None}, inplace=True)
+
+    df1.to_csv('csv/after_redact/postgres_public_trr_trr_refresh.csv')
+    df2.to_csv('csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
+    df3.to_csv('csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
+
 def integration(List):
     trr_df = pd.read_csv(List[0])
     officer_df = pd.read_csv(List[1])
@@ -254,25 +269,36 @@ def integration(List):
     final_trr_cleaned.to_csv('src/csv/after_integration/merged.csv')
 
 if __name__ == '__main__':
+    #Type correct after OpenRefine
     file1 = 'src/csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'src/csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'src/csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1,file2,file3]
-
     # typecorrection(type_correct_list)
 
+    #Reconciliation
     file1 = 'src/csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
-    file2 = 'src/csv/postgres_public_trr_trrstatus_refresh.csv'
+    file2 = 'src/csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
-
     reconciliation(recon_list)
 
+    #Redact correction
     file1 = 'src/csv/after_recon/postgres_public_trr_trr_refresh.csv'
-    file2 = 'src/csv/original/postgres_public_data_officer.csv'
-    # integration_list = [file1,file2]
+    file2 = 'src/csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
+    file3 = 'src/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
+    redact_list = [file1,file2,file3]
+    # redact(redact_list)
 
+    #Integration
+    file1 = 'src/csv/after_redact/postgres_public_trr_trr_refresh.csv'
+    file2 = 'src/csv/original/postgres_public_data_officer.csv'
+    file3 = 'src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv'
+    integration_list = [file1,file2,file3]
     # integration(integration_list)
 
+    file = 'src/csv/postgres_public_trr_subjectweapon_refresh.csv'
+    # subjectweapon_df = pd.read_csv(file)
+    # subjectweapon_df.to_csv('src/csv/output/postgres_public_trr_subjectweapon_refresh.csv')
 
 
 
