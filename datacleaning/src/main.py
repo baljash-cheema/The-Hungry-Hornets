@@ -230,9 +230,9 @@ def integration(List):
 
     df = pd.merge(trr_df, officer_df, how='left',
                   left_on=['officer_first_name', 'officer_middle_initial', 'officer_last_name',
-                           'officer_last_name_suffix', 'officer_appointed_date', 'officer_birth_year', 'officer_gender',
+                           'officer_appointed_date', 'officer_birth_year', 'officer_gender',
                            'officer_race'],
-                  right_on=['first_name', 'middle_initial', 'last_name', 'suffix_name', 'appointed_date', 'birth_year',
+                  right_on=['first_name', 'middle_initial', 'last_name', 'appointed_date', 'birth_year',
                             'gender', 'race']).fillna("None")
     df6 = df[df['id'] != 'None'].reset_index(drop=True)
     df4 = df[df['id'] == 'None'][trr_df.columns.values.tolist()].reset_index(drop=True)
@@ -289,7 +289,7 @@ if __name__ == '__main__':
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
     recon_list = [file1, file2]
 
-    reconciliation(recon_list)
+    # reconciliation(recon_list)
 
     # #Redact correction -> when to do this? perhaps this needs to get at the very end?
     # file1 = 'src/csv/after_recon/postgres_public_trr_trr_refresh.csv'
@@ -298,8 +298,8 @@ if __name__ == '__main__':
     # redact_list = [file1,file2,file3]
 
     #Integration next
-    file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
+    file1 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     integration_list = [file1, file2]
 
-    # integration(integration_list)
+    integration(integration_list)
