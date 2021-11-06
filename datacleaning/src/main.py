@@ -283,8 +283,8 @@ if __name__ == '__main__':
 
     # typecorrection(type_correct_list)
 
-    file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
-    file2 = 'csv/postgres_public_trr_trrstatus_refresh.csv'
+    file1 = 'csv/postgres_public_trr_trr_refresh.csv' # changed to original files
+    file2 = 'csv/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
     recon_list = [file1, file2]
 
     reconciliation(recon_list)
@@ -293,4 +293,4 @@ if __name__ == '__main__':
     file2 = 'csv/original/postgres_public_data_officer.csv'
     integration_list = [file1, file2]
 
-    integration(integration_list)
+    # integration(integration_list)
