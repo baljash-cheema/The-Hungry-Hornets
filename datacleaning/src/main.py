@@ -264,9 +264,10 @@ def redact(List):
     df1.to_csv('src/csv/after_redact/postgres_public_trr_trr_refresh.csv')
     df2.to_csv('src/csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
     df3.to_csv('src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
-    
+
 def integration(List):
-    trr_df = pd.read_csv(List[0])
+    #3.1 trr_status starts here
+    trr_df = pd.read_csv(List[2])
     officer_df = pd.read_csv(List[1])
 
     trr_df['officer_appointed_date'].replace({'REDACTED': None},inplace =True)
@@ -302,16 +303,13 @@ def integration(List):
     p4 = df3[df3['id'] != 'None'].reset_index(drop=True)
     p5 = df3[df3['id'] == 'None'].reset_index(drop=True)
 
-    final_trr_cleaned = pd.concat([df6, df6, p3, p4, p5])
-    print(final_trr_cleaned.columns)
-    final_trr_status_cleaned = final_trr_cleaned[['officer_rank', 'officer_star', 'status', 'status_datetime', 'officer_age', 'officer_unit_at_incident',
+    final_trr_status_cleaned = pd.concat([df6, df6, p3, p4, p5])
+    final_trr_status_cleaned = final_trr_status_cleaned[['officer_rank', 'officer_star', 'status', 'status_datetime', 'officer_age', 'officer_unit_at_incident',
          'trr_report_id','id']]
 
-    final_trr_status_cleaned.to_csv('merge2.csv')
+    final_trr_status_cleaned.to_csv('final_trr_status_cleaned.csv')
 
-    final_trr_cleaned = final_trr_cleaned.reset_index(drop=True)
-    #final_trr_cleaned.to_csv('merge2.csv')
-
+    #3.1 trr_refresh starts here
     trr_df = pd.read_csv(List[0])
     officer_df = pd.read_csv(List[1])
     trr_df = trr_df.rename(columns={'id': 'trr_id'})
@@ -367,15 +365,18 @@ def integration(List):
                                            'officer_unit_name', 'officer_unit_detail',
                                            'trr_created', 'latitude', 'longitude', 'point']]
     final_trr_cleaned = final_trr_cleaned.reset_index(drop=True)
-    for i in range(len(final_trr_cleaned['officer_unit_name'])):
-        if len(final_trr_cleaned['officer_unit_name'][i]) == 3:
-            final_trr_cleaned['officer_unit_name'][i] = final_trr_cleaned['officer_unit_name'][i]
-        elif len(final_trr_cleaned['officer_unit_name'][i]) == 2:
-            final_trr_cleaned['officer_unit_name'][i] = '0' + final_trr_cleaned['officer_unit_name'][i]
-        elif len(final_trr_cleaned['officer_unit_name'][i]) == 1:
-            final_trr_cleaned['officer_unit_name'][i] = '00' + final_trr_cleaned['officer_unit_name'][i]
-        print(final_trr_cleaned['officer_unit_name'][i])
+    final_trr_cleaned.to_csv('final_trr_cleaned.csv')
+
+    #3.2 Starts here
     unit_info=pd.read_csv('csv/original/postgres_public_data_policeunit.csv')
+    for i in range(len(final_trr_cleaned['officer_unit_name'])):
+        print("Working")
+        if len(final_trr_cleaned['officer_unit_name'][i]) == 3:
+            final_trr_cleaned['officer_unit_name'][i] = int(final_trr_cleaned['officer_unit_name'][i])
+        elif len(final_trr_cleaned['officer_unit_name'][i]) == 2:
+            final_trr_cleaned['officer_unit_name'][i] = int('0' + final_trr_cleaned['officer_unit_name'][i])
+        elif len(final_trr_cleaned['officer_unit_name'][i]) == 1:
+            final_trr_cleaned['officer_unit_name'][i] = int('00' + final_trr_cleaned['officer_unit_name'][i])
 
     new_df_unit_id = pd.merge(final_trr_cleaned, unit_info, how='left', left_on='officer_unit_name',
                               right_on='unit_name').fillna("None")
@@ -416,8 +417,10 @@ if __name__ == '__main__':
     # redact_list = [file1,file2,file3]
 
     #Integration next
-    file1 = 'csv/after_recon/trr_status_0.csv'
+    file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
-    integration_list = [file1, file2]
+    file3 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
+
+    integration_list = [file1,file2,file3]
 
     integration(integration_list)
