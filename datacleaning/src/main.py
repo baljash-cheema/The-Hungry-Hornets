@@ -239,15 +239,17 @@ def integration(List):
             elif match_total == 3:
                 trr_df.loc[row,id] = officer_df.loc[row2,id]
                 # print(trr_df.loc[row,id])
-            elif match_total == 2:
-                trr_df.loc[row,id] = officer_df.loc[row2,id]
-                # print(trr_df.loc[row,id])
-            elif match_total == 1:
-                trr_df.loc[row,id] = officer_df.loc[row2,id]
-                # print(trr_df.loc[row,id])
+            # elif match_total == 2:
+            #     trr_df.loc[row,id] = officer_df.loc[row2,id]
+            #     # print(trr_df.loc[row,id])
+            # elif match_total == 1:
+            #     trr_df.loc[row,id] = officer_df.loc[row2,id]
+            #     # print(trr_df.loc[row,id])
         count = count + 1
         print(count)
         print(trr_df.shape)
+        # if count > 100:
+        #     break
 
 
     # print(trr_df)
