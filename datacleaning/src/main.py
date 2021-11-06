@@ -233,21 +233,22 @@ def integration(List):
             comp_vals = officer_df.loc[row2][match_on]
             match_total = sum([match_options[i] == comp_vals[i] for i in match_on])
             if match_total == 4:
-                print(trr_df[row][id])
-                trr_df.loc[row][id] = officer_df.loc[row2][id]
+                trr_df.loc[row,id] = officer_df.loc[row2,id]
                 # print(trr_df.loc[row,id])
+                break
             elif match_total == 3:
-                trr_df.loc[row][id] = officer_df.loc[row2][id]
+                trr_df.loc[row,id] = officer_df.loc[row2,id]
                 # print(trr_df.loc[row,id])
             elif match_total == 2:
-                trr_df.loc[row][id] = officer_df.loc[row2][id]
+                trr_df.loc[row,id] = officer_df.loc[row2,id]
                 # print(trr_df.loc[row,id])
             elif match_total == 1:
-                trr_df.loc[row][id] = officer_df.loc[row2][id]
+                trr_df.loc[row,id] = officer_df.loc[row2,id]
                 # print(trr_df.loc[row,id])
         count = count + 1
-        if count == 17466:
-            break
+        print(count)
+        print(trr_df.shape)
+
 
     # print(trr_df)
 
