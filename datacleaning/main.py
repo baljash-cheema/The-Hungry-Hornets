@@ -244,13 +244,13 @@ def integration(List):
     p4 = df3[df3['id'] != 'None'].reset_index(drop=True)
     p5 = df3[df3['id'] == 'None'].reset_index(drop=True)
 
-    final_trr_cleaned = pd.concat([df6, df6, p3, p4, p5])
+    df_trr = pd.concat([df6, df6, p3, p4, p5])
 
-    print(final_trr_cleaned['id'].value_counts())
+    print(df_trr['id'].value_counts())
 
-    final_trr_cleaned.to_csv('merge2.csv')
+    df_trr.to_csv('merge2.csv')
 
-    final_trr_cleaned = final_trr_cleaned.reset_index(drop=True)
+    final_trr_cleaned = df_trr.reset_index(drop=True)
     final_trr_cleaned.to_csv('csv/after_integration/merged.csv')
 
 if __name__ == '__main__':
