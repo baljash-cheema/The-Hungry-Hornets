@@ -235,6 +235,7 @@ def reconciliation(List):
       df['officer_race'] = df['officer_race'].replace([x],y)
 
     df.to_csv('csv/after_recon/trr_status_0.csv')
+    
 def redact(List):
 
     df1 = pd.read_csv(List[0])
