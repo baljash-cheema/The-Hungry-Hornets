@@ -197,17 +197,17 @@ def reconciliation(List):
       y=x.split(" ")[0].capitalize()
       df['officer_first_name'] = df['officer_first_name'].replace([x],y)
     print(df['officer_first_name'])
-    
+
     for x in df['officer_last_name']:
       y=x.split(" ")[0].capitalize()
       df['officer_last_name'] = df['officer_last_name'].replace([x],y)
     print(df['officer_last_name'])
-    
+
     for x in df['officer_race']:
       y=x.split(" ")[0].capitalize()
       df['officer_race'] = df['officer_race'].replace([x],y)
     print(df['officer_last_name'])
-    
+
     for x in df['officer_appointed_date']:
         if x!='REDACTED':
             print(x)
@@ -225,7 +225,7 @@ def reconciliation(List):
             if int(x.split("-")[0])>2021:
                 d = datetime.datetime.strptime(x, "%Y-%m-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
-    
+
     for x in df['officer_race']:
       if x=='UNKNOWN':
         df['officer_race'] = df['officer_race'].replace([x], np.nan)
@@ -233,8 +233,8 @@ def reconciliation(List):
         df['officer_race'] = df['officer_race'].replace([x], 'Native American/alaskan Native')
       y=x.split(" ")[0].capitalize()
       df['officer_race'] = df['officer_race'].replace([x],y)
-    
-    df.to_csv('trr_status_0.csv')
+
+    df.to_csv('csv/after_recon/trr_status_0.csv')
 def redact(List):
 
     df1 = pd.read_csv(List[0])
