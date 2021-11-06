@@ -68,9 +68,9 @@ def typecorrection(List):
     convert_time(df1,to_timestamp1)
     convert_time(df3,to_timestamp3)
 
-    df1.to_csv('csv/after_typecorrection/postgres_public_trr_trr_refresh.csv')
-    df2.to_csv('csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv')
-    df3.to_csv('csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv')
+    df1.to_csv('src/csv/after_typecorrection/postgres_public_trr_trr_refresh.csv')
+    df2.to_csv('src/csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv')
+    df3.to_csv('src/csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv')
 
 def reconciliation(List):
     df = pd.read_csv(List[0])
@@ -156,7 +156,7 @@ def reconciliation(List):
             df['indoor_or_outdoor'] = df['indoor_or_outdoor'].replace([x], 'Indoor')
     p('indoor_or_outdoor')
 
-    # df.to_csv('csv/after_recon/postgres_public_trr_trr_refresh.csv')
+    # df.to_csv('src/csv/after_recon/postgres_public_trr_trr_refresh.csv')
 
     df = pd.read_csv(List[1])
     
@@ -204,7 +204,7 @@ def reconciliation(List):
                 print(x,str(d.year-100)+'-'+str(d.month)+'-'+str(d.day))
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year-100)+'-'+str(d.month)+'-'+str(d.day)))
 
-    # df.to_csv('csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
+    # df.to_csv('src/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
 
 def integration(List):
     trr_df = pd.read_csv(List[0])
@@ -251,27 +251,27 @@ def integration(List):
     df_trr.to_csv('merge2.csv')
 
     final_trr_cleaned = df_trr.reset_index(drop=True)
-    final_trr_cleaned.to_csv('csv/after_integration/merged.csv')
+    final_trr_cleaned.to_csv('src/csv/after_integration/merged.csv')
 
 if __name__ == '__main__':
-    file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
-    file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
-    file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
+    file1 = 'src/csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
+    file2 = 'src/csv/original/postgres_public_trr_weapondischarge_refresh.csv'
+    file3 = 'src/csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1,file2,file3]
 
     # typecorrection(type_correct_list)
 
-    file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
-    file2 = 'csv/postgres_public_trr_trrstatus_refresh.csv'
+    file1 = 'src/csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
+    file2 = 'src/csv/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
 
     reconciliation(recon_list)
 
-    file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
-    file2 = 'csv/original/postgres_public_data_officer.csv'
-    integration_list = [file1,file2]
+    file1 = 'src/csv/after_recon/postgres_public_trr_trr_refresh.csv'
+    file2 = 'src/csv/original/postgres_public_data_officer.csv'
+    # integration_list = [file1,file2]
 
-    integration(integration_list)
+    # integration(integration_list)
 
 
 
