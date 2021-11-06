@@ -222,7 +222,7 @@ def integration(List):
     trr_status_df.rename(columns={'officer_last_name' : 'last_name','officer_first_name' : 'first_name', 'officer_middle_initial' : 'middle_initial',
                            'officer_appointed_date' : 'appointed_date'},inplace=True)
 
-    match_on = ['last_name', 'first_name', 'appointed_date', 'middle_initial']
+    match_on = ['last_name', 'first_name', 'appointed_date']
 
     id = 'id'
     count = 0
@@ -232,11 +232,11 @@ def integration(List):
         for row2 in officer_df.index:
             comp_vals = officer_df.loc[row2][match_on]
             match_total = sum([match_options[i] == comp_vals[i] for i in match_on])
-            if match_total == 4:
+            if match_total == 2:
                 trr_df.loc[row,id] = officer_df.loc[row2,id]
                 # print(trr_df.loc[row,id])
                 break
-            elif match_total == 3:
+            elif match_total == 1:
                 trr_df.loc[row,id] = officer_df.loc[row2,id]
                 # print(trr_df.loc[row,id])
             # elif match_total == 2:
@@ -248,13 +248,25 @@ def integration(List):
         count = count + 1
         print(count)
         print(trr_df.shape)
-        # if count > 100:
-        #     break
+
+        if count % 100 == 0:
+            trr_df.to_csv('csv/after_integration/merged.csv')
+            new_df = trr_df.copy()
+            dropped_tables = ['gender', 'race', 'appointed_date', 'rank', 'active', \
+               'birth_year', 'first_name', 'last_name', 'tags', 'middle_initial', \
+               'suffix_name', 'resignation_date', 'complaint_percentile', \
+               'middle_initial2', 'civilian_allegation_percentile', \
+               'honorable_mention_percentile', 'internal_allegation_percentile', \
+               'trr_percentile', 'allegation_count', 'sustained_count', \
+               'civilian_compliment_count', 'current_badge', 'current_salary', \
+               'discipline_count', 'honorable_mention_count', 'last_unit_id', \
+               'major_award_count', 'trr_count', 'unsustained_count', \
+               'has_unique_name', 'created_at', 'updated_at']
+
+            new_df=new_df.drop(dropped_tables, axis = 1)
+            new_df.to_csv('csv/output/out.csv')
 
 
-    # print(trr_df)
-
-    trr_df.to_csv('csv/after_integration/merged.csv')
 
 '''
     for row in trr_status_df.index:
@@ -273,40 +285,10 @@ def integration(List):
                 trr_status_df.loc[row, id] = officer_df.loc[row2, id]
                 # print(trr_df.loc[row,id])
 '''
-    # trr_list = list()
-    # officer_list = list()
-    #
-    # for index,row in trr_df.iterrows():
-    #     ident = row['officer_first_name'] + row['officer_last_name']
-    #     trr_list.append(ident)
-    #
-    # for index,row in officer_df.iterrows():
-    #     ident = str(row['first_name']) + str(row['last_name'])
-    #     officer_list.append(ident)
-    #
-    # trr_df['ident'] = trr_list
-    # officer_df['ident'] = officer_list
-    #
-    # df3 = trr_df.merge(officer_df, how="left",on=['ident'])
-    # # print(df3.columns)
 
 
-    #
-    # dropped_tables = ['ident', 'gender', 'race', 'appointed_date', 'rank', 'active', \
-    #    'birth_year', 'first_name', 'last_name', 'tags', 'middle_initial', \
-    #    'suffix_name', 'resignation_date', 'complaint_percentile', \
-    #    'middle_initial2', 'civilian_allegation_percentile', \
-    #    'honorable_mention_percentile', 'internal_allegation_percentile', \
-    #    'trr_percentile', 'allegation_count', 'sustained_count', \
-    #    'civilian_compliment_count', 'current_badge', 'current_salary', \
-    #    'discipline_count', 'honorable_mention_count', 'last_unit_id', \
-    #    'major_award_count', 'trr_count', 'unsustained_count', \
-    #    'has_unique_name', 'created_at', 'updated_at']
-    #
-    # df3=df3.drop(dropped_tables, axis = 1)
-    # print(df3['id'].isnull().sum())
-    #
-    # df3.to_csv('csv/after_integration/merged.csv')
+
+
 
 
 if __name__ == '__main__':

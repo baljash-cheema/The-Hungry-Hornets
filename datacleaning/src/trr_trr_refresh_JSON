@@ -64,4 +64,82 @@
     "repeatCount": 10,
     "description": "Text transform on cells in column subject_birth_year using expression value.toNumber()"
   },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "street",
+    "expression": "value.toTitlecase()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column street using expression value.toTitlecase()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "location",
+    "expression": "grel:value.replace('NURSING / RETIREMENT HOME','Nursing Home/Retirement Home').replace('SCHOOL - PUBLIC BUILDING','School, Public, Building').replace('RESIDENCE - YARD (FRONT / BACK)','Residential Yard (Front/Back)').replace('HOSPITAL BUILDING / GROUNDS','Hospital Building/Grounds').replace('RESIDENCE - PORCH / HALLWAY','Residence Porch/Hallway')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column location using expression grel:value.replace('NURSING / RETIREMENT HOME','Nursing Home/Retirement Home').replace('SCHOOL - PUBLIC BUILDING','School, Public, Building').replace('RESIDENCE - YARD (FRONT / BACK)','Residential Yard (Front/Back)').replace('HOSPITAL BUILDING / GROUNDS','Hospital Building/Grounds').replace('RESIDENCE - PORCH / HALLWAY','Residence Porch/Hallway')"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "location",
+    "expression": "grel:value.replace('SCHOOL - PUBLIC GROUNDS','School, Public, Grounds').replace('SCHOOL - PRIVATE GROUNDS','School, Private, Grounds').replace('POLICE FACILITY / VEHICLE PARKING LOT','Police Facility/Veh Parking Lot').replace('VEHICLE - OTHER RIDE SHARE SERVICE (LYFT, UBER, ETC.)','Vehicle - Other Ride Service').replace('OTHER RAILROAD PROPERTY / TRAIN DEPOT','Other Railroad Prop / Train Depot').replace('HOTEL / MOTEL','HOTEL/MOTEL').replace('TAVERN / LIQUOR STORE','TAVERN/LIQUOR STORE')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column location using expression grel:value.replace('SCHOOL - PUBLIC GROUNDS','School, Public, Grounds').replace('SCHOOL - PRIVATE GROUNDS','School, Private, Grounds').replace('POLICE FACILITY / VEHICLE PARKING LOT','Police Facility/Veh Parking Lot').replace('VEHICLE - OTHER RIDE SHARE SERVICE (LYFT, UBER, ETC.)','Vehicle - Other Ride Service').replace('OTHER RAILROAD PROPERTY / TRAIN DEPOT','Other Railroad Prop / Train Depot').replace('HOTEL / MOTEL','HOTEL/MOTEL').replace('TAVERN / LIQUOR STORE','TAVERN/LIQUOR STORE')"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "location",
+    "expression": "grel:value.replace('/',' / ')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column location using expression grel:value.replace('/',' / ')"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "location",
+    "expression": "value.toTitlecase()",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column location using expression value.toTitlecase()"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "location",
+    "expression": "grel:value.replace(' / ','/')",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column location using expression grel:value.replace(' / ','/')"
+  }
 ]
