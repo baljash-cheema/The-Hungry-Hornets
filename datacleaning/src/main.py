@@ -319,6 +319,10 @@ if __name__ == '__main__':
     integration_list = [file1,file2,file3]
     integration(integration_list)
 
+    file = 'postgres_public_trr_subjectweapon_refresh.csv'
+    subjectweapon_df = pd.read_csv(file)
+    subjectweapon_df.to_csv('csv/output/postgres_public_trr_subjectweapon_refresh.csv')
+
 
 
 

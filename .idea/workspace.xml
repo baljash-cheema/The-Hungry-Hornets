@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3f2aa215-1b3d-42dd-b901-7527e0a026d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/src/csv/after_integration/merged.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datacleaning/src/csv/after_integration/merged.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datacleaning/src/README" beforeDir="false" afterPath="$PROJECT_DIR$/datacleaning/src/README" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datacleaning/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/datacleaning/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datacleaning/src/trr_trr_refresh_JSON" beforeDir="false" afterPath="$PROJECT_DIR$/datacleaning/src/trr_trr_refresh_JSON" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +112,7 @@
       <workItem from="1636138576615" duration="5824000" />
       <workItem from="1636145798381" duration="4204000" />
       <workItem from="1636153410647" duration="66000" />
-      <workItem from="1636153529695" duration="8691000" />
+      <workItem from="1636153529695" duration="9274000" />
     </task>
     <servers />
   </component>
