@@ -291,7 +291,7 @@ if __name__ == '__main__':
 
     reconciliation(recon_list)
 
-    # #Redact correction -> when to do this?
+    # #Redact correction -> when to do this? perhaps this needs to get at the very end?
     # file1 = 'src/csv/after_recon/postgres_public_trr_trr_refresh.csv'
     # file2 = 'src/csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
     # file3 = 'src/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
