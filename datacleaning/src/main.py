@@ -27,18 +27,6 @@ def convert_time(df, list):
 
     return None
 
-
-def convert_redact(df, list):
-    '''
-    Takes a list of strings that are column headers, iterates through them and converts any "redacted" entries to null.
-    '''
-
-    for each in list:
-        df[each].replace({"REDACTED": None}, inplace=True)
-
-    return None
-
-
 def typecorrection(List):
     df1 = pd.read_csv(List[0])
     df2 = pd.read_csv(List[1])
@@ -52,20 +40,6 @@ def typecorrection(List):
     to_timestamp1 = ['trr_datetime', 'trr_created']
     to_timestamp3 = ['status_datetime']
 
-    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
-                'officer_on_duty',
-                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
-                'subject_injured',
-                'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
-                'notify_det_division',
-                'trr_created']
-    to_null2 = ['firearm_reloaded', 'sight_used']
-    to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
-
-    convert_redact(df1, to_null1)
-    convert_redact(df2, to_null2)
-    convert_redact(df3, to_null3)
-
     convert_bool(df1, to_bool1)
     convert_bool(df2, to_bool2)
 
@@ -75,7 +49,6 @@ def typecorrection(List):
     df1.to_csv('csv/after_typecorrection/postgres_public_trr_trr_refresh.csv')
     df2.to_csv('csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv')
     df3.to_csv('csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv')
-
 
 def reconciliation(List):
     df = pd.read_csv(List[0])
@@ -219,6 +192,34 @@ def reconciliation(List):
 
     # df.to_csv('csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
 
+def redact(List):
+
+    df1 = pd.read_csv(List[0])
+    df2 = pd.read_csv(List[1])
+    df3 = pd.read_csv(List[2])
+
+    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
+                'officer_on_duty',
+                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
+                'subject_injured',
+                'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
+                'notify_det_division',
+                'trr_created']
+    to_null2 = ['firearm_reloaded', 'sight_used']
+    to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
+
+    for each in to_null1:
+        df1[each].replace({"REDACTED": None}, inplace=True)
+
+    for each in to_null2:
+        df2[each].replace({"REDACTED": None}, inplace=True)
+
+    for each in to_null3:
+        df3[each].replace({"REDACTED": None}, inplace=True)
+
+    df1.to_csv('src/csv/after_redact/postgres_public_trr_trr_refresh.csv')
+    df2.to_csv('src/csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
+    df3.to_csv('src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
 
 def integration(List):
     trr_df = pd.read_csv(List[0])
@@ -274,8 +275,8 @@ def integration(List):
     final_trr_cleaned = df_trr.reset_index(drop=True)
     final_trr_cleaned.to_csv('csv/after_integration/merged.csv')
 
-
 if __name__ == '__main__':
+    #Type correct after OpenRefine
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
@@ -283,12 +284,20 @@ if __name__ == '__main__':
 
     # typecorrection(type_correct_list)
 
-    file1 = 'csv/postgres_public_trr_trr_refresh.csv' # changed to original files
-    file2 = 'csv/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
+    #Reconciliation next
+    file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv' # changed to original files
+    file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
     recon_list = [file1, file2]
 
     reconciliation(recon_list)
 
+    # #Redact correction -> when to do this?
+    # file1 = 'src/csv/after_recon/postgres_public_trr_trr_refresh.csv'
+    # file2 = 'src/csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
+    # file3 = 'src/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
+    # redact_list = [file1,file2,file3]
+
+    #Integration next 
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     integration_list = [file1, file2]
