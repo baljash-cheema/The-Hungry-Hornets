@@ -138,7 +138,7 @@ def reconciliation(List):
             df['indoor_or_outdoor'] = df['indoor_or_outdoor'].replace([x], 'Indoor')
     p('indoor_or_outdoor')
 
-    # df.to_csv('csv/after_recon/postgres_public_trr_trr_refresh.csv')
+    df.to_csv('csv/after_recon/postgres_public_trr_trr_refresh.csv')
 
     df = pd.read_csv(List[1])
 
@@ -190,7 +190,7 @@ def reconciliation(List):
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (
                             str(d.year - 100) + '-' + str(d.month) + '-' + str(d.day)))
 
-    # df.to_csv('csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
+    df.to_csv('csv/after_recon/postgres_public_trr_trrstatus_refresh.csv')
 
 def redact(List):
 
@@ -297,7 +297,7 @@ if __name__ == '__main__':
     # file3 = 'src/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
     # redact_list = [file1,file2,file3]
 
-    #Integration next 
+    #Integration next
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     integration_list = [file1, file2]
