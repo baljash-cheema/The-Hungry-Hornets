@@ -217,9 +217,9 @@ def redact(List):
     for each in to_null3:
         df3[each].replace({"REDACTED": None}, inplace=True)
 
-    df1.to_csv('csv/after_redact/postgres_public_trr_trr_refresh.csv')
-    df2.to_csv('csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
-    df3.to_csv('csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
+    df1.to_csv('src/csv/after_redact/postgres_public_trr_trr_refresh.csv')
+    df2.to_csv('src/csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
+    df3.to_csv('src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
 
 def integration(List):
     trr_df = pd.read_csv(List[0])
@@ -228,17 +228,19 @@ def integration(List):
     trr_df['officer_appointed_date'].replace({'REDACTED': None},inplace =True)
     trr_df['officer_appointed_date']= pd.to_datetime(trr_df['officer_appointed_date']).dt.date
 
-    df = pd.merge(trr_df, officer_df,  how='left', left_on=['officer_first_name','officer_middle_initial','officer_last_name','officer_last_name_suffix','officer_appointed_date','officer_birth_year','officer_gender','officer_race'],
-                  right_on = ['first_name','middle_initial','last_name','suffix_name','appointed_date','birth_year','gender','race']).fillna("None")
+    df = pd.merge(trr_df, officer_df,  how='left', left_on=['officer_first_name','officer_middle_initial','officer_last_name','officer_appointed_date','officer_birth_year','officer_gender','officer_race'],
+                  right_on = ['first_name','middle_initial','last_name','appointed_date','birth_year','gender','race']).fillna("None")
     df6 = df[df['id'] != 'None'].reset_index(drop=True)
     df4 = df[df['id'] == 'None'][trr_df.columns.values.tolist()].reset_index(drop=True)
     df4['officer_birth_year'] = df4['officer_birth_year'].apply(pd.to_numeric, errors='coerce')
+
 
     df1 = pd.merge(df4, officer_df, how='left',
                        left_on=['officer_first_name', 'officer_race', 'officer_last_name', 'officer_appointed_date', 'officer_birth_year', 'officer_gender'],
                        right_on=['first_name', 'race', 'last_name', 'appointed_date', 'birth_year',
                                  'gender']).fillna("None")
 
+    print(df1)
     df6 = df1[df1['id'] != 'None'].reset_index(drop=True)
     df4 = df1[df1['id'] == 'None'][trr_df.columns.values.tolist()].reset_index(drop=True)
 
@@ -280,7 +282,7 @@ if __name__ == '__main__':
     file1 = 'src/csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
     file2 = 'src/csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
-    reconciliation(recon_list)
+    # reconciliation(recon_list)
 
     #Redact correction
     file1 = 'src/csv/after_recon/postgres_public_trr_trr_refresh.csv'
@@ -294,7 +296,7 @@ if __name__ == '__main__':
     file2 = 'src/csv/original/postgres_public_data_officer.csv'
     file3 = 'src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv'
     integration_list = [file1,file2,file3]
-    # integration(integration_list)
+    integration(integration_list)
 
     file = 'src/csv/postgres_public_trr_subjectweapon_refresh.csv'
     # subjectweapon_df = pd.read_csv(file)

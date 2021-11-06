@@ -265,13 +265,13 @@ if __name__ == '__main__':
     file2 = 'src/csv/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1,file2]
 
-    reconciliation(recon_list)
+    # reconciliation(recon_list)
 
     file1 = 'src/csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'src/csv/original/postgres_public_data_officer.csv'
-    # integration_list = [file1,file2]
+    integration_list = [file1,file2]
 
-    # integration(integration_list)
+    integration(integration_list)
 
 
 
