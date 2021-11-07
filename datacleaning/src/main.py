@@ -388,7 +388,7 @@ def integration(List):
                                      'subject_armed', 'subject_injured', 'subject_alleged_injury',
                                      'subject_age', 'subject_birth_year', 'subject_gender', 'subject_race',
                                      'officer_age', 'officer_unit_name', 'officer_unit_detail',
-                                     'trr_created', 'latitude', 'longitude', 'point', 'id_x', 'description']]
+                                     'trr_created', 'latitude', 'longitude', 'point', 'id_y', 'description']]
     new_df_unit_id = new_df_unit_id.rename(columns={'id': 'officer_unit_id', 'description': 'officer_unit_detail_id'})
     new_df_unit_id.to_csv('merge4.csv')
 
