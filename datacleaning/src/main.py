@@ -418,7 +418,10 @@ if __name__ == '__main__':
 
     integration_list = [file1,file2,file3]
 
-    integration(integration_list)
+    # integration(integration_list)
+
+
+        #'../output/postgres_public_data_officer.csv')
 
 
 # need to do redact
