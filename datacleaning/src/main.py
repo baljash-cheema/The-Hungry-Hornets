@@ -360,6 +360,50 @@ def integration(List):
     new_df_unit_id = new_df_unit_id.rename(columns={'id': 'officer_unit_id', 'description': 'officer_unit_detail_id'})
     new_df_unit_id.to_csv('csv/after_integration/postgres_public_data_policeunit.csv')
 
+def together(List):
+    actionresponse = pd.read_csv(List[0])
+    charge = pd.read_csv(List[1])
+    subjectweapon = pd.read_csv(List[2])
+    trr = pd.read_csv(List[3])
+    trrstatus = pd.read_csv(List[4])
+    weapondischarge = pd.read_csv(List[5])
+    search_id = trr['trr_id'].tolist()
+
+    # actionresponse
+    print(actionresponse.shape)
+    print(actionresponse.trr_report_id.isin(search_id).unique())
+    actionresponse = actionresponse[actionresponse.trr_report_id.isin(search_id)]
+    print(actionresponse.shape)
+    actionresponse.to_csv(List[0])
+
+    # charge
+    print(charge.shape)
+    print(charge.trr_report_id.isin(search_id).unique())
+    charge = charge[charge.trr_report_id.isin(search_id)]
+    print(charge.shape)
+    charge.to_csv(List[1])
+
+    # subjectweapon
+    print(subjectweapon.shape)
+    print(subjectweapon.trr_report_id.isin(search_id).unique())
+    subjectweapon = subjectweapon[subjectweapon.trr_report_id.isin(search_id)]
+    print(subjectweapon.shape)
+    subjectweapon.to_csv(List[2])
+
+    # trrstatus
+    print(trrstatus.shape)
+    print(trrstatus.trr_report_id.isin(search_id).unique())
+    trrstatus=trrstatus[trrstatus.trr_report_id.isin(search_id)]
+    print(trrstatus.shape)
+    trrstatus.to_csv(List[4])
+
+    # weapondischarge
+    print(weapondischarge.shape)
+    print(weapondischarge.trr_report_id.isin(search_id).unique())
+    weapondischarge = weapondischarge[weapondischarge.trr_report_id.isin(search_id)]
+    print(weapondischarge.shape)
+    weapondischarge.to_csv(List[5])
+
 def redact(List):
 
     df1 = pd.read_csv(List[0])
@@ -386,80 +430,35 @@ def redact(List):
     df2.to_csv('../output/trr_weapondischarge_refresh.csv')
     df3.to_csv('../output/trr_trrstatus_refresh.csv')
 
-def together(List):
-    actionresponse = pd.read_csv(List[0])
-    charge = pd.read_csv(List[1])
-    subjectweapon = pd.read_csv(List[2])
-    trr = pd.read_csv(List[3])
-    trrstatus = pd.read_csv(List[4])
-    weapondischarge = pd.read_csv(List[5])
-    search_id=trr['id'].tolist()
-
-    # actionresponse
-    print(actionresponse.shape)
-    print(actionresponse.trr_report_id.isin(search_id).unique())
-    actionresponse = actionresponse[actionresponse.trr_report_id.isin(search_id)]
-    print(actionresponse.shape)
-
-    # charge
-    print(charge.shape)
-    print(charge.trr_report_id.isin(search_id).unique())
-    charge = charge[charge.trr_report_id.isin(search_id)]
-    print(charge.shape)
-
-    # subjectweapon
-    print(subjectweapon.shape)
-    print(subjectweapon.trr_report_id.isin(search_id).unique())
-    subjectweapon = subjectweapon[subjectweapon.trr_report_id.isin(search_id)]
-    print(subjectweapon.shape)
-
-    # trrstatus
-    print(trrstatus.shape)
-    print(trrstatus.trr_report_id.isin(search_id).unique())
-    trrstatus=trrstatus[trrstatus.trr_report_id.isin(search_id)]
-    print(trrstatus.shape)
-
-    # weapondischarge
-    print(weapondischarge.shape)
-    print(weapondischarge.trr_report_id.isin(search_id).unique())
-    weapondischarge = weapondischarge[weapondischarge.trr_report_id.isin(search_id)]
-    print(weapondischarge.shape)
-
 if __name__ == '__main__':
     # type_correct after OpenRefine with JSON files
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1, file2, file3]
-
-    # typecorrection(type_correct_list)
+    typecorrection(type_correct_list)
 
     # reconciliation next
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv' # changed to original files
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
     recon_list = [file1, file2]
-
-    # reconciliation(recon_list)
+    reconciliation(recon_list)
 
     # integration next
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     file3 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
-
     integration_list = [file1,file2,file3]
+    integration(integration_list)
 
-    # integration(integration_list)
-
-    # foreign key match
+    # foreign key match -> together function
     file1 = 'csv/original/postgres_public_trr_actionresponse_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_charge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv'
     file4 = 'csv/after_integration/postgres_public_trr_trr_refresh.csv'
     file5 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
     file6 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
-
     together_list = [file1, file2, file3, file4, file5, file6]
-
     together(together_list)
 
     # redact next
@@ -467,40 +466,32 @@ if __name__ == '__main__':
     file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
     redact_list = [file1,file2,file3]
-    # redact(redact_list)
+    redact(redact_list)
 
+# final formatting, column adjustment, and output to output file
+    trr_df = pd.read_csv('../output/trr_trr_refresh.csv')
+    trr_df = trr_df.rename(columns={'event_number': 'event_id'})
+    trr_df.drop('officer_age', axis=1, inplace=True)
+    trr_df.drop('officer_unit_detail', axis=1, inplace=True)
+    trr_df.drop('officer_unit_name', axis=1, inplace=True)
+    trr_df.drop('trr_created', axis=1, inplace=True)
+    trr_df.drop('latitude', axis=1, inplace=True)
+    trr_df.drop('longitude', axis=1, inplace=True)
+    trr_df.to_csv('../output/trr_trr_refresh.csv')
 
+    trr_status = pd.read_csv('../output/trr_trrstatus_refresh.csv')
+    trr_status = trr_status.rename(columns={'officer_rank': 'rank ', 'officer_star':'star', })
+    trr_status.drop('officer_age', axis=1, inplace=True)
+    trr_status.drop('officer_unit_at_incident', axis=1, inplace=True)
+    trr_status.to_csv('../output/trr_trrstatus_refresh.csv')
 
+    trr_charge = pd.read_csv('csv/original/postgres_public_trr_charge_refresh.csv')
+    trr_charge.drop('trr_rd_no', axis=1, inplace=True)
+    trr_charge.to_csv('../output/trr_charge_refresh.csv')
 
-# direct everything to output
+    trr_action = pd.read_csv('csv/original/postgres_public_trr_actionresponse_refresh.csv')
+    trr_action.to_csv('../output/trr_action.csv')
 
-#final formatting, column adjustment, and output to output file
-'''
-trr_trr(id, crid, event_id, beat, block, direction, street, location, trr_datetime, indoor_or_outdoor, lighting_condition, weather_condition, notify_OEMC, notify_district_sergeant, notify_OP_command, notify_DET_division, party_fired_first, officer_assigned_beat, officer_on_duty, officer_in_uniform, officer_injured, officer_rank, subject_armed, subject_injured, subject_alleged_injury, subject_age, subject_birth_year, subject_gender, subject_race, officer_id, officer_unit_id, officer_unit_detail_id, point)
-    df = df.rename(columns={'event_number': 'event_id'})
-    df.drop(['officer_age','officer_unit_name', 'trr_created', 'latitude','longitude'],axis=1, inplace=True)
-    (after redact)
-    -id to officer id, move to end 
+    trr_subject = pd.read_csv('csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv')
+    trr_subject.to_csv('../output/trr_subject.csv')
 
-trr_trrstatus(rank, star, status, status_datetime, officer_id, trr_id);
-    df = df.rename(columns={'officer_rank': 'rank ', 'officer_star':'star', })
-    df.drop(['age','officer_unit_at_incident'], axis=1, inplace=True)
-    (after redact)
-    
-trr_actionresponse(person, resistance_type, action, other_description, trr_id);
--trr_report_id -> trr_id
-(just foreign key)
-
-trr_charge(statute, description, subject_no, trr_id);
-    df.drop('trr_rd_no', axis=1, inplace=True)
-    (just foreign key)
-
-trr_weapondischarge(weapon_type,weapon_type_description,firearm_make,firearm_model,firearm_barrel_length,firearm_caliber,total_number_of_shots,firearm_reloaded,number_of_cartridge_reloaded,handgun_worn_type,handgun_drawn_type,method_used_to_reload,sight_used,protective_cover_used,discharge_distance,object_struck_of_discharge,discharge_position,trr_id);
--trr_report_id -> trr_id
-(after redact)
-
-trr_subjectweapon(weapon_type, firearm_caliber, weapon_description, trr_id);
-trr_report_id -> trr_id
-(after open_refine)
-
-'''
