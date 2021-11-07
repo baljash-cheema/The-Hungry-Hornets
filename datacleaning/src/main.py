@@ -386,6 +386,45 @@ def redact(List):
     df2.to_csv('../output/trr_weapondischarge_refresh.csv')
     df3.to_csv('../output/trr_trrstatus_refresh.csv')
 
+def together(List):
+    actionresponse = pd.read_csv(List[0])
+    charge = pd.read_csv(List[1])
+    subjectweapon = pd.read_csv(List[2])
+    trr = pd.read_csv(List[3])
+    trrstatus = pd.read_csv(List[4])
+    weapondischarge = pd.read_csv(List[5])
+    search_id=trr['id'].tolist()
+
+    # actionresponse
+    print(actionresponse.shape)
+    print(actionresponse.trr_report_id.isin(search_id).unique())
+    actionresponse = actionresponse[actionresponse.trr_report_id.isin(search_id)]
+    print(actionresponse.shape)
+
+    # charge
+    print(charge.shape)
+    print(charge.trr_report_id.isin(search_id).unique())
+    charge = charge[charge.trr_report_id.isin(search_id)]
+    print(charge.shape)
+
+    # subjectweapon
+    print(subjectweapon.shape)
+    print(subjectweapon.trr_report_id.isin(search_id).unique())
+    subjectweapon = subjectweapon[subjectweapon.trr_report_id.isin(search_id)]
+    print(subjectweapon.shape)
+
+    # trrstatus
+    print(trrstatus.shape)
+    print(trrstatus.trr_report_id.isin(search_id).unique())
+    trrstatus=trrstatus[trrstatus.trr_report_id.isin(search_id)]
+    print(trrstatus.shape)
+
+    # weapondischarge
+    print(weapondischarge.shape)
+    print(weapondischarge.trr_report_id.isin(search_id).unique())
+    weapondischarge = weapondischarge[weapondischarge.trr_report_id.isin(search_id)]
+    print(weapondischarge.shape)
+
 if __name__ == '__main__':
     # type_correct after OpenRefine with JSON files
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
@@ -411,12 +450,26 @@ if __name__ == '__main__':
 
     # integration(integration_list)
 
+    # foreign key match
+    file1 = 'csv/original/postgres_public_trr_actionresponse_refresh.csv'
+    file2 = 'csv/original/postgres_public_trr_charge_refresh.csv'
+    file3 = 'csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv'
+    file4 = 'csv/after_integration/postgres_public_trr_trr_refresh.csv'
+    file5 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
+    file6 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
+
+    together_list = [file1, file2, file3, file4, file5, file6]
+
+    together(together_list)
+
     # redact next
     file1 = 'csv/after_integration/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
     redact_list = [file1,file2,file3]
-    redact(redact_list)
+    # redact(redact_list)
+
+
 
 
 # direct everything to output
