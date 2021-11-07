@@ -21,6 +21,7 @@ def convert_time(df, list):
     return None
 
 def typecorrection(List):
+    print('type_correction')
     df1 = pd.read_csv(List[0])
     df2 = pd.read_csv(List[1])
     df3 = pd.read_csv(List[2])
@@ -44,6 +45,7 @@ def typecorrection(List):
     df3.to_csv('csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv')
 
 def reconciliation(List):
+    print('reconciliation')
     df = pd.read_csv(List[0])
 
     def p(x):
@@ -231,8 +233,8 @@ def reconciliation(List):
 
     df.to_csv('csv/after_recon/trr_status_0.csv')
 
-
 def integration(List):
+    print('integration')
     trr_df = pd.read_csv(List[2]) #status refresh
     officer_df = pd.read_csv(List[1])
 
@@ -361,6 +363,8 @@ def integration(List):
     new_df_unit_id.to_csv('csv/after_integration/postgres_public_data_policeunit.csv')
 
 def together(List):
+    print('together -> foreign key')
+
     actionresponse = pd.read_csv(List[0])
     charge = pd.read_csv(List[1])
     subjectweapon = pd.read_csv(List[2])
@@ -405,6 +409,7 @@ def together(List):
     weapondischarge.to_csv(List[5])
 
 def redact(List):
+    print('redact')
 
     df1 = pd.read_csv(List[0])
     df2 = pd.read_csv(List[1])
