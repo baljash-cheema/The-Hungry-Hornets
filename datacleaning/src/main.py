@@ -432,20 +432,29 @@ if __name__ == '__main__':
 
 '''
 trr_trr(id, crid, event_id, beat, block, direction, street, location, trr_datetime, indoor_or_outdoor, lighting_condition, weather_condition, notify_OEMC, notify_district_sergeant, notify_OP_command, notify_DET_division, party_fired_first, officer_assigned_beat, officer_on_duty, officer_in_uniform, officer_injured, officer_rank, subject_armed, subject_injured, subject_alleged_injury, subject_age, subject_birth_year, subject_gender, subject_race, officer_id, officer_unit_id, officer_unit_detail_id, point)
+    df = df.rename(columns={'event_number': 'event_id'})
+    df.drop(['officer_age','officer_unit_name', 'trr_created', 'latitude','longitude'],axis=1, inplace=True)
+    (after redact)
 
 trr_trrstatus(rank, star, status, status_datetime, officer_id, trr_id);
-
+    df = df.rename(columns={'officer_rank': 'rank ', 'officer_star':'star', })
+    df.drop(['age','officer_unit_at_incident'], axis=1, inplace=True)
+    (after redact)
+    
 trr_actionresponse(person, resistance_type, action, other_description, trr_id);
 -trr_report_id -> trr_id
+(just foreign key)
 
 trr_charge(statute, description, subject_no, trr_id);
--drop trr_rd_no
--trr_report_id -> trr_id
+    df.drop('trr_rd_no', axis=1, inplace=True)
+    (just foreign key)
 
 trr_weapondischarge(weapon_type,weapon_type_description,firearm_make,firearm_model,firearm_barrel_length,firearm_caliber,total_number_of_shots,firearm_reloaded,number_of_cartridge_reloaded,handgun_worn_type,handgun_drawn_type,method_used_to_reload,sight_used,protective_cover_used,discharge_distance,object_struck_of_discharge,discharge_position,trr_id);
--drop unnamed 
 -trr_report_id -> trr_id
+(after redact)
 
 trr_subjectweapon(weapon_type, firearm_caliber, weapon_description, trr_id);
 trr_report_id -> trr_id
+(after open_refine)
+
 '''
