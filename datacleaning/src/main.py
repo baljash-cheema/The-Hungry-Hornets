@@ -420,16 +420,16 @@ if __name__ == '__main__':
     # file3 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
     # redact_list = [file1,file2,file3]
 
-    #final formatting, column adjustment, and output to output file
+
 
         #'../output/postgres_public_data_officer.csv')
 
 
-# need to do redact
-# need to rename and reorder dataframes
-# put in output
-# readme
 
+# fix readme
+# direct everything to output
+
+#final formatting, column adjustment, and output to output file
 '''
 trr_trr(id, crid, event_id, beat, block, direction, street, location, trr_datetime, indoor_or_outdoor, lighting_condition, weather_condition, notify_OEMC, notify_district_sergeant, notify_OP_command, notify_DET_division, party_fired_first, officer_assigned_beat, officer_on_duty, officer_in_uniform, officer_injured, officer_rank, subject_armed, subject_injured, subject_alleged_injury, subject_age, subject_birth_year, subject_gender, subject_race, officer_id, officer_unit_id, officer_unit_detail_id, point)
     df = df.rename(columns={'event_number': 'event_id'})
