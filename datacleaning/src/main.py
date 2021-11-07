@@ -432,7 +432,6 @@ if __name__ == '__main__':
 '''
 trr_trr(id, crid, event_id, beat, block, direction, street, location, trr_datetime, indoor_or_outdoor, lighting_condition, weather_condition, notify_OEMC, notify_district_sergeant, notify_OP_command, notify_DET_division, party_fired_first, officer_assigned_beat, officer_on_duty, officer_in_uniform, officer_injured, officer_rank, subject_armed, subject_injured, subject_alleged_injury, subject_age, subject_birth_year, subject_gender, subject_race, officer_id, officer_unit_id, officer_unit_detail_id, point)
 
-
 trr_trrstatus(rank, star, status, status_datetime, officer_id, trr_id);
 
 trr_actionresponse(person, resistance_type, action, other_description, trr_id);
