@@ -34,10 +34,10 @@ Step 2:
 'postgres_public_trr_trr_refresh.csv','postgres_public_trr_trrstatus_refresh.csv', and 'postgres_public_trr_subjectweapon_refresh.csv' are run through OpenRefine using the JSON files under the src directory named after the table they correspond to. The output is to be saved as a CSV named the same as the original under csv/after_openrefine. 
 
 Step 3:
-Run main.py. It will pull in CSV files from csv/original and csv/after_openrefine and run them through various functions designed to clean the data. As the files move through each function, they will move through a series of directories to track flow through the program.
+Run main.py. It will pull in CSV files from csv/original and csv/after_openrefine and run them through various functions designed to clean the data. As the files move through each function, they will move through a series of directories to track flow through the program. The locations of the files that run through this are hard coded into the Python file, so please maintain the naming convention. 
 
 Step 4;
-The final CSVs will be found under the output directory within the main directory. 
+The final CSVs will be found under the output directory within the main directory, after the primary and foreign keys have been aligned. 
 
 
 
