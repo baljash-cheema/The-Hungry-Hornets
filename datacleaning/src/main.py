@@ -366,15 +366,12 @@ def redact(List):
     df2 = pd.read_csv(List[1])
     df3 = pd.read_csv(List[2])
 
-    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
-                'officer_on_duty',
-                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
-                'subject_injured',
+    to_null1 = ['trr_datetime', 'beat', 'officer_age', 'officer_on_duty', 'officer_injured',
+                'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed','subject_injured',
                 'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
-                'notify_det_division',
-                'trr_created']
+                'notify_det_division','trr_created']
     to_null2 = ['firearm_reloaded', 'sight_used']
-    to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
+    to_null3 = ['status_datetime']
 
     for each in to_null1:
         df1[each].replace({"REDACTED": None}, inplace=True)
@@ -390,7 +387,7 @@ def redact(List):
     df3.to_csv('../output/trr_trrstatus_refresh.csv')
 
 if __name__ == '__main__':
-    #type_correct after OpenRefine with JSON files
+    # type_correct after OpenRefine with JSON files
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
@@ -398,14 +395,14 @@ if __name__ == '__main__':
 
     # typecorrection(type_correct_list)
 
-    #reconciliation next
+    # reconciliation next
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv' # changed to original files
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
     recon_list = [file1, file2]
 
     # reconciliation(recon_list)
 
-    #integration next
+    # integration next
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     file3 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
@@ -415,18 +412,13 @@ if __name__ == '__main__':
     # integration(integration_list)
 
     # redact next
-    # file1 = 'csv/after_integration/postgres_public_trr_trr_refresh.csv'
-    # file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
-    # file3 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
-    # redact_list = [file1,file2,file3]
+    file1 = 'csv/after_integration/postgres_public_trr_trr_refresh.csv'
+    file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
+    file3 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
+    redact_list = [file1,file2,file3]
+    redact(redact_list)
 
 
-
-        #'../output/postgres_public_data_officer.csv')
-
-
-
-# fix readme
 # direct everything to output
 
 #final formatting, column adjustment, and output to output file
@@ -435,6 +427,7 @@ trr_trr(id, crid, event_id, beat, block, direction, street, location, trr_dateti
     df = df.rename(columns={'event_number': 'event_id'})
     df.drop(['officer_age','officer_unit_name', 'trr_created', 'latitude','longitude'],axis=1, inplace=True)
     (after redact)
+    -id to officer id, move to end 
 
 trr_trrstatus(rank, star, status, status_datetime, officer_id, trr_id);
     df = df.rename(columns={'officer_rank': 'rank ', 'officer_star':'star', })
