@@ -7,15 +7,11 @@ import pandas as pd
 
 
 def convert_bool(df, list):
-    '''
-    Takes a list of strings that are column headers, iterates through them and converts it to bool.
-    '''
 
     for each in list:
         df[each].replace({"Yes": True, "Y": True, "No": False, "N": False}, inplace=True)
 
     return None
-
 
 def convert_time(df, list):
     '''
@@ -269,7 +265,6 @@ def integration(List):
     trr_df = pd.read_csv(List[2])
     officer_df = pd.read_csv(List[1])
 
-
     trr_df['officer_appointed_date'].replace({'REDACTED': None},inplace =True)
 
     df = pd.merge(trr_df, officer_df,  how='left', left_on=['officer_first_name', 'officer_last_name'],
@@ -307,7 +302,7 @@ def integration(List):
     final_trr_status_cleaned = final_trr_status_cleaned[['officer_rank', 'officer_star', 'status', 'status_datetime', 'officer_age', 'officer_unit_at_incident',
          'trr_report_id','id']]
 
-    final_trr_status_cleaned.to_csv('merge2.csv')
+    final_trr_status_cleaned.to_csv('merge2.csv') #trr_trrstatus
 
     trr_df = pd.read_csv(List[0])
     officer_df = pd.read_csv(List[1])
@@ -364,7 +359,8 @@ def integration(List):
                                            'officer_unit_name', 'officer_unit_detail',
                                            'trr_created', 'latitude', 'longitude', 'point']]
     final_trr_cleaned = final_trr_cleaned.reset_index(drop=True)
-    final_trr_cleaned.to_csv('merge3.csv')
+    final_trr_cleaned.to_csv('merge3.csv') #trr_refresh
+
     unit_info=pd.read_csv('csv/original/postgres_public_data_policeunit.csv')
 
     for i in range(len(final_trr_cleaned['officer_unit_name'])):
@@ -422,3 +418,30 @@ if __name__ == '__main__':
     integration_list = [file1,file2,file3]
 
     integration(integration_list)
+
+
+# need to do redact
+# need to rename and reorder dataframes
+# put in output
+# readme
+
+'''
+trr_trr(id, crid, event_id, beat, block, direction, street, location, trr_datetime, indoor_or_outdoor, lighting_condition, weather_condition, notify_OEMC, notify_district_sergeant, notify_OP_command, notify_DET_division, party_fired_first, officer_assigned_beat, officer_on_duty, officer_in_uniform, officer_injured, officer_rank, subject_armed, subject_injured, subject_alleged_injury, subject_age, subject_birth_year, subject_gender, subject_race, officer_id, officer_unit_id, officer_unit_detail_id, point)
+
+
+trr_trrstatus(rank, star, status, status_datetime, officer_id, trr_id);
+
+trr_actionresponse(person, resistance_type, action, other_description, trr_id);
+-trr_report_id -> trr_id
+
+trr_charge(statute, description, subject_no, trr_id);
+-drop trr_rd_no
+-trr_report_id -> trr_id
+
+trr_weapondischarge(weapon_type,weapon_type_description,firearm_make,firearm_model,firearm_barrel_length,firearm_caliber,total_number_of_shots,firearm_reloaded,number_of_cartridge_reloaded,handgun_worn_type,handgun_drawn_type,method_used_to_reload,sight_used,protective_cover_used,discharge_distance,object_struck_of_discharge,discharge_position,trr_id);
+-drop unnamed 
+-trr_report_id -> trr_id
+
+trr_subjectweapon(weapon_type, firearm_caliber, weapon_description, trr_id);
+trr_report_id -> trr_id
+'''
