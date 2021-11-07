@@ -14,9 +14,6 @@ def convert_bool(df, list):
     return None
 
 def convert_time(df, list):
-    '''
-    Takes a list of strings that are column headers, iterates through them and converts it to timestamp.
-    '''
 
     for each in list:
         df[each] = pd.to_datetime(df[each], utc=True)
@@ -83,7 +80,6 @@ def reconciliation(List):
         if x == 'ASIAN / PACIFIC ISLANDER':
             df['subject_race'] = df['subject_race'].replace([x], 'ASIAN/PACIFIC ISLANDER')
 
-    # pd=pd.to_numeric(df['subject_gender'], errors='coerce')
     for x in df['subject_gender']:
         if x == 'MALE':
             df['subject_gender'] = df['subject_gender'].replace([x], 'M')
@@ -106,12 +102,14 @@ def reconciliation(List):
                 d = datetime.datetime.strptime(x, "%Y-%b-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (
                             str(d.year) + '-' + str(d.month) + '-' + str(d.day)))
+
     for x in df['officer_appointed_date']:
         if x != 'REDACTED':
             if int(x.split("-")[0]) > 2021:
                 d = datetime.datetime.strptime(x, "%Y-%m-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (
                             str(d.year - 100) + '-' + str(d.month) + '-' + str(d.day)))
+
     p('subject_birth_year')
     for x in df['subject_birth_year']:
         if len(str(x)) == 2:
@@ -216,6 +214,7 @@ def reconciliation(List):
             elif not x.split("-")[1].isnumeric():
                 d = datetime.datetime.strptime(x, "%Y-%b-%d")
                 df['officer_appointed_date'] = df['officer_appointed_date'].replace([x], (str(d.year)+'-'+str(d.month)+'-'+str(d.day)))
+
     for x in df['officer_appointed_date']:
         if x!='REDACTED':
             if int(x.split("-")[0])>2021:
@@ -232,37 +231,9 @@ def reconciliation(List):
 
     df.to_csv('csv/after_recon/trr_status_0.csv')
 
-def redact(List):
-
-    df1 = pd.read_csv(List[0])
-    df2 = pd.read_csv(List[1])
-    df3 = pd.read_csv(List[2])
-
-    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
-                'officer_on_duty',
-                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
-                'subject_injured',
-                'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
-                'notify_det_division',
-                'trr_created']
-    to_null2 = ['firearm_reloaded', 'sight_used']
-    to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
-
-    for each in to_null1:
-        df1[each].replace({"REDACTED": None}, inplace=True)
-
-    for each in to_null2:
-        df2[each].replace({"REDACTED": None}, inplace=True)
-
-    for each in to_null3:
-        df3[each].replace({"REDACTED": None}, inplace=True)
-
-    df1.to_csv('src/csv/after_redact/postgres_public_trr_trr_refresh.csv')
-    df2.to_csv('src/csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
-    df3.to_csv('src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
 
 def integration(List):
-    trr_df = pd.read_csv(List[2])
+    trr_df = pd.read_csv(List[2]) #status refresh
     officer_df = pd.read_csv(List[1])
 
     trr_df['officer_appointed_date'].replace({'REDACTED': None},inplace =True)
@@ -302,7 +273,7 @@ def integration(List):
     final_trr_status_cleaned = final_trr_status_cleaned[['officer_rank', 'officer_star', 'status', 'status_datetime', 'officer_age', 'officer_unit_at_incident',
          'trr_report_id','id']]
 
-    final_trr_status_cleaned.to_csv('merge2.csv') #trr_trrstatus
+    final_trr_status_cleaned.to_csv('csv/after_integration/postgres_public_trr_trrstatus_refresh.csv') #trr_trrstatus
 
     trr_df = pd.read_csv(List[0])
     officer_df = pd.read_csv(List[1])
@@ -311,6 +282,7 @@ def integration(List):
     trr_df['officer_appointed_date'].replace({'REDACTED': None}, inplace=True)
     #'officer_first_name', 'officer_middle_initial', 'officer_last_name', 'officer_middle_initial', 'officer_appointed_date', 'officer_birth_year', 'officer_gender', 'officer_race'],
     #'first_name','middle_initial','last_name','suffix_name','appointed_date','birth_year','gender','race'])
+
     df = pd.merge(trr_df, officer_df, how='left',
                   left_on=['officer_first_name','officer_last_name'
                            ],
@@ -359,7 +331,7 @@ def integration(List):
                                            'officer_unit_name', 'officer_unit_detail',
                                            'trr_created', 'latitude', 'longitude', 'point']]
     final_trr_cleaned = final_trr_cleaned.reset_index(drop=True)
-    final_trr_cleaned.to_csv('merge3.csv') #trr_refresh
+    final_trr_cleaned.to_csv('csv/after_integration/postgres_public_trr_trr_refresh.csv') #trr_refresh
 
     unit_info=pd.read_csv('csv/original/postgres_public_data_policeunit.csv')
 
@@ -386,7 +358,36 @@ def integration(List):
                                      'officer_age', 'officer_unit_name', 'officer_unit_detail',
                                      'trr_created', 'latitude', 'longitude', 'point', 'id_y', 'description']]
     new_df_unit_id = new_df_unit_id.rename(columns={'id': 'officer_unit_id', 'description': 'officer_unit_detail_id'})
-    new_df_unit_id.to_csv('merge4.csv')
+    new_df_unit_id.to_csv('csv/after_integration/postgres_public_data_policeunit.csv')
+
+def redact(List):
+
+    df1 = pd.read_csv(List[0])
+    df2 = pd.read_csv(List[1])
+    df3 = pd.read_csv(List[2])
+
+    to_null1 = ['trr_datetime', 'beat', 'officer_appointed_date', 'officer_birth_year', 'officer_age',
+                'officer_on_duty',
+                'officer_injured', 'officer_in_uniform', 'subject_birth_year', 'subject_age', 'subject_armed',
+                'subject_injured',
+                'subject_alleged_injury', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command',
+                'notify_det_division',
+                'trr_created']
+    to_null2 = ['firearm_reloaded', 'sight_used']
+    to_null3 = ['officer_appointed_date', 'officer_birth_year', 'status_datetime']
+
+    for each in to_null1:
+        df1[each].replace({"REDACTED": None}, inplace=True)
+
+    for each in to_null2:
+        df2[each].replace({"REDACTED": None}, inplace=True)
+
+    for each in to_null3:
+        df3[each].replace({"REDACTED": None}, inplace=True)
+
+    df1.to_csv('src/csv/after_redact/postgres_public_trr_trr_refresh.csv')
+    df2.to_csv('src/csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
+    df3.to_csv('src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
 
 if __name__ == '__main__':
     #Type correct after OpenRefine
