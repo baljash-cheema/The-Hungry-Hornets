@@ -385,12 +385,12 @@ def redact(List):
     for each in to_null3:
         df3[each].replace({"REDACTED": None}, inplace=True)
 
-    df1.to_csv('src/csv/after_redact/postgres_public_trr_trr_refresh.csv')
-    df2.to_csv('src/csv/after_redact/postgres_public_trr_weapondischarge_refresh.csv')
-    df3.to_csv('src/csv/after_redact/postgres_public_trr_trrstatus_refresh.csv')
+    df1.to_csv('../output/trr_trr_refresh.csv')
+    df2.to_csv('../output/trr_weapondischarge_refresh.csv')
+    df3.to_csv('../output/trr_trrstatus_refresh.csv')
 
 if __name__ == '__main__':
-    #Type correct after OpenRefine
+    #type_correct after OpenRefine with JSON files
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
@@ -398,20 +398,14 @@ if __name__ == '__main__':
 
     # typecorrection(type_correct_list)
 
-    #Reconciliation next
+    #reconciliation next
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv' # changed to original files
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
     recon_list = [file1, file2]
 
     # reconciliation(recon_list)
 
-    # #Redact correction -> when to do this? perhaps this needs to get at the very end?
-    # file1 = 'src/csv/after_recon/postgres_public_trr_trr_refresh.csv'
-    # file2 = 'src/csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
-    # file3 = 'src/csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
-    # redact_list = [file1,file2,file3]
-
-    #Integration next
+    #integration next
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     file3 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
@@ -420,6 +414,13 @@ if __name__ == '__main__':
 
     # integration(integration_list)
 
+    # redact next
+    # file1 = 'csv/after_integration/postgres_public_trr_trr_refresh.csv'
+    # file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
+    # file3 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
+    # redact_list = [file1,file2,file3]
+
+    #final formatting, column adjustment, and output to output file
 
         #'../output/postgres_public_data_officer.csv')
 
