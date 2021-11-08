@@ -1,3 +1,5 @@
+# need to create a table 
+
 SELECT (race, count)
 FROM data_racepopulation
 WHERE data_racepopulation.area_id
@@ -6,7 +8,7 @@ FROM data_area
 WHERE data_area.id
 IN (SELECT beat_id
 FROM data_allegation
-WHERE data_allegation.id
+WHERE data_allegation.crid
 IN (SELECT allegation_id
 FROM data_officerallegation
 WHERE data_officerallegation.allegation_category_id
