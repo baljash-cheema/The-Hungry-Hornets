@@ -5,14 +5,13 @@ Hungry Hornets)
 
 Project Theme: We would like to explore the relationship between officer compliance with department medical policy including but not limited to incidents of drug and alcohol abuse, with allegations of police misconduct, officer salary and rank, use of force by police, location and type of police work conducted, and distribution of awards given by the department. We will explore these relationships with other aspects of health as the data permits.
 
-For our second checkpoint, we created visualizations to answer the following questions:
+For the revision of our second checkpoint analyses, we created visualizations to answer the following questions:
 
-1) Are officers with drug/alcohol abuse allegations more or less likely to be disciplined as a result of the fallout of the allegation, compared with officers with all other kinds of misconduct allegations?
+1) What is the frequency of each kind of drug/alcohol abuse and medical allegation made by officers as compared with civilians?
 
-We visualized this with two adjacent pie graphs, showing percentage disciplined versus not disciplined in each group. The SQL code under the src directory was utilized to generate the data and exported to an Excel file (disciplined.xlsx) under the question 1 directory. This was then plotted in Tableau, with that workbook provided under the question 1 directory, as is the final pdf. 
+We visualized this with two adjacent word clouds, showing the relative frequency with which each allegation was made by officers and civilians, respectively. The SQL code under the src directory was utilized to generate the csv that provided the data for this visualization in Tableau. A filter was toggled to create the word clouds for officer complaints (is_officer_complaint=True) and civilians (is_officer_complaint=False), respectively. These visualizations can be found in our final findings pdf file.
 
-2) Is the frequency of drug/alcohol abuse allegations versus all other allegations changing over time? We will visualize this with a connected scatterplot.
+2) Is the frequency of drug/alcohol abuse and medical allegations versus other allegations changing over time? We will visualize this with a connected scatterplot.
 
-The SQL code under the src directory contains our query data. Since we are using the same table for each query, it was challenging to join or make a union of the output. Thus we ran each separately and exported the output to two CSV files. We then used Python to join the tables and export as one Excel file (data_checkpoint_2_2.xlsx) shared in this directory. The Python code for this is provided as well under src.
-
-The Excel file was then uploaded into Tableau to generate a plot with the two lines shown. Both of these documents are provided under the question 2 directory, as is the final output as a pdf.
+The SQL query and python code utilized to generate the csvs for this visualization can be found under the src directory.
+The line plot generated in Tableau was made more legible and less noisy than the original submission, by revising the allegation categories, decompressing the graph (making it wider) and specifying the axes for each series, respectively.
