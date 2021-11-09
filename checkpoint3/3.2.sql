@@ -7,7 +7,7 @@ WHERE data_officerallegation.allegation_category_id IN
   WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
   OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'));
 
---salary, pay grade for officers in these complaints
+--salary, pay grade for those officers
 SELECT salary, pay_grade
 FROM data_salary
 WHERE data_salary.officer_id IN
