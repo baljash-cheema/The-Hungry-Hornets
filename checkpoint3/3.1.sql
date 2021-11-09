@@ -58,7 +58,7 @@ WHERE data_racepopulation.id IN
         WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
         OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')))));
 
---Geoms for all these id's 
+--Geoms for all these id's
 SELECT id,geom
 FROM data_linearea
 WHERE data_linearea.id IN

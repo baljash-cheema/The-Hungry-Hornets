@@ -8,7 +8,7 @@ WHERE data_officerallegation.allegation_category_id IN
   OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'));
 
 
---Race, gender, age (of who?) related to DAM allegations 
+--Race, gender, age (of who?) related to DAM allegations
 SELECT race, gender, age
 FROM data_complainant
 WHERE data_complainant.allegation_id
