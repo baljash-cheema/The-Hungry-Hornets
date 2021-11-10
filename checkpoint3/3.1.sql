@@ -69,3 +69,38 @@ WHERE data_linearea.id IN
       FROM data_allegationcategory
       WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
       OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
+
+--these are all beat names from these allgeations
+--in data_area, names of areas are either neighborhoods or beats (given by number)
+--i mapped those beat numbers to beat names
+--so if we combine the output from both, we have a list of names
+SELECT DISTINCT(unit_description)
+FROM data_policebeat
+WHERE data_policebeat.beat_name IN
+    (SELECT name
+    FROM data_area
+    WHERE data_area.id IN
+      (SELECT area_id
+      FROM data_allegation_areas
+      WHERE data_allegation_areas.allegation_id IN
+        (SELECT DISTINCT(allegation_id)
+        FROM data_officerallegation
+        WHERE data_officerallegation.allegation_category_id IN
+          (SELECT id
+          FROM data_allegationcategory
+          WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+          OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')))));
+
+SELECT name
+FROM data_area
+WHERE data_area.id IN
+  (SELECT area_id
+  FROM data_allegation_areas
+  WHERE data_allegation_areas.allegation_id IN
+    (SELECT DISTINCT(allegation_id)
+    FROM data_officerallegation
+    WHERE data_officerallegation.allegation_category_id IN
+      (SELECT id
+      FROM data_allegationcategory
+      WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+      OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
