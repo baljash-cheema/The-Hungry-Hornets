@@ -1,3 +1,8 @@
+SQL query:
+
+SELECT * FROM trr_trr_refresh
+
+JSON code:
 [
   {
     "op": "core/text-transform",
@@ -143,3 +148,6 @@
     "description": "Text transform on cells in column location using expression grel:value.replace(' / ','/')"
   }
 ]
+
+Output final product to this location:
+'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'

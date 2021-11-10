@@ -4,7 +4,42 @@ import numpy as np
 import re
 import datetime
 import pandas as pd
+import psycopg2
 
+def get_data():
+    connection = psycopg2.connect(database="postgres", user='cpdbstudent', password='DataSci4AI',
+                            host='codd01.research.northwestern.edu',port='5432')
+
+    connection.autocommit = True
+    cursor = connection.cursor()
+
+    officer_sql = 'SELECT * FROM data_officer'
+    policeunit_sql = 'SELECT * FROM data_policeunit'
+    actionrefresh_sql = 'SELECT * FROM trr_actionresponse_refresh'
+    chargefresh_sql = 'SELECT * FROM trr_charge_refresh'
+    subjectweapon_sql = 'SELECT * FROM trr_subjectweapon_refresh'
+    refresh_sql = 'SELECT * FROM trr_trr_refresh'
+    status_sql = 'SELECT * FROM trr_trrstatus_refresh'
+    weapons_sql = 'SELECT * FROM trr_weapondischarge_refresh'
+
+    sql_queries = [officer_sql, policeunit_sql, actionrefresh_sql, chargefresh_sql, subjectweapon_sql, refresh_sql,
+    status_sql, weapons_sql]
+
+    officer_loc = 'csv/original/postgres_public_data_officer.csv'
+    policeunit_loc = 'csv/original/postgres_public_data_policeunit.csv'
+    actionrefresh_loc = 'csv/original/postgres_public_trr_trractionresponse_refresh.csv'
+    chargefresh_loc = 'csv/original/postgres_public_trr_charge_refresh.csv'
+    subjectweapon_loc = 'csv/original/postgres_public_trr_subjectweapon_refresh.csv'
+    refresh_loc = 'csv/original/postgres_public_trr_trr_refresh.csv'
+    status_loc = 'csv/original/postgres_public_trr_trrstatus_refresh.csv'
+    weapons_loc = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
+
+    loc_list = [officer_loc, policeunit_loc, actionrefresh_loc, chargefresh_loc, subjectweapon_loc, refresh_loc,
+                status_loc, weapons_loc]
+
+    for sql,output in zip(sql_queries, loc_list)
+        table = pd.read_sql_query(sql,connection)
+        table.to_csv(output)
 
 def convert_bool(df, list):
 
@@ -436,25 +471,28 @@ def redact(List):
     df3.to_csv('../output/trr_trrstatus_refresh.csv')
 
 if __name__ == '__main__':
+    # get data from DB
+    get_data()
+
     # type_correct after OpenRefine with JSON files
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1, file2, file3]
-    typecorrection(type_correct_list)
+    # typecorrection(type_correct_list)
 
     # reconciliation next
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv' # changed to original files
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
     recon_list = [file1, file2]
-    reconciliation(recon_list)
+    # reconciliation(recon_list)
 
     # integration next
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     file3 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
     integration_list = [file1,file2,file3]
-    integration(integration_list)
+    # integration(integration_list)
 
     # foreign key match -> together function
     file1 = 'csv/original/postgres_public_trr_actionresponse_refresh.csv'
@@ -464,39 +502,39 @@ if __name__ == '__main__':
     file5 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
     file6 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
     together_list = [file1, file2, file3, file4, file5, file6]
-    together(together_list)
+    # together(together_list)
 
     # redact next
     file1 = 'csv/after_integration/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
     redact_list = [file1,file2,file3]
-    redact(redact_list)
+    # redact(redact_list)
 
 # final formatting, column adjustment, and output to output file
-    trr_df = pd.read_csv('../output/trr_trr_refresh.csv')
-    trr_df = trr_df.rename(columns={'event_number': 'event_id'})
-    trr_df.drop('officer_age', axis=1, inplace=True)
-    trr_df.drop('officer_unit_detail', axis=1, inplace=True)
-    trr_df.drop('officer_unit_name', axis=1, inplace=True)
-    trr_df.drop('trr_created', axis=1, inplace=True)
-    trr_df.drop('latitude', axis=1, inplace=True)
-    trr_df.drop('longitude', axis=1, inplace=True)
-    trr_df.to_csv('../output/trr_trr_refresh.csv')
-
-    trr_status = pd.read_csv('../output/trr_trrstatus_refresh.csv')
-    trr_status = trr_status.rename(columns={'officer_rank': 'rank ', 'officer_star':'star', })
-    trr_status.drop('officer_age', axis=1, inplace=True)
-    trr_status.drop('officer_unit_at_incident', axis=1, inplace=True)
-    trr_status.to_csv('../output/trr_trrstatus_refresh.csv')
-
-    trr_charge = pd.read_csv('csv/original/postgres_public_trr_charge_refresh.csv')
-    trr_charge.drop('trr_rd_no', axis=1, inplace=True)
-    trr_charge.to_csv('../output/trr_charge_refresh.csv')
-
-    trr_action = pd.read_csv('csv/original/postgres_public_trr_actionresponse_refresh.csv')
-    trr_action.to_csv('../output/trr_action.csv')
-
-    trr_subject = pd.read_csv('csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv')
-    trr_subject.to_csv('../output/trr_subject.csv')
+#     trr_df = pd.read_csv('../output/trr_trr_refresh.csv')
+#     trr_df = trr_df.rename(columns={'event_number': 'event_id'})
+#     trr_df.drop('officer_age', axis=1, inplace=True)
+#     trr_df.drop('officer_unit_detail', axis=1, inplace=True)
+#     trr_df.drop('officer_unit_name', axis=1, inplace=True)
+#     trr_df.drop('trr_created', axis=1, inplace=True)
+#     trr_df.drop('latitude', axis=1, inplace=True)
+#     trr_df.drop('longitude', axis=1, inplace=True)
+#     trr_df.to_csv('../output/trr_trr_refresh.csv')
+#
+#     trr_status = pd.read_csv('../output/trr_trrstatus_refresh.csv')
+#     trr_status = trr_status.rename(columns={'officer_rank': 'rank ', 'officer_star':'star', })
+#     trr_status.drop('officer_age', axis=1, inplace=True)
+#     trr_status.drop('officer_unit_at_incident', axis=1, inplace=True)
+#     trr_status.to_csv('../output/trr_trrstatus_refresh.csv')
+#
+#     trr_charge = pd.read_csv('csv/original/postgres_public_trr_charge_refresh.csv')
+#     trr_charge.drop('trr_rd_no', axis=1, inplace=True)
+#     trr_charge.to_csv('../output/trr_charge_refresh.csv')
+#
+#     trr_action = pd.read_csv('csv/original/postgres_public_trr_actionresponse_refresh.csv')
+#     trr_action.to_csv('../output/trr_action.csv')
+#
+#     trr_subject = pd.read_csv('csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv')
+#     trr_subject.to_csv('../output/trr_subject.csv')
 

@@ -1,3 +1,8 @@
+SQL query:
+SELECT * FROM trr_trrstatus_refresh
+
+JSON code:
+
 [
   {
     "op": "core/text-transform",
@@ -13,3 +18,7 @@
     "description": "Text transform on cells in column officer_birth_year using expression value.toNumber()"
   }
 ]
+
+
+Output final product to this location:
+'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
