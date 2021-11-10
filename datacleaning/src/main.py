@@ -471,30 +471,32 @@ def redact(List):
     df3.to_csv('../output/trr_trrstatus_refresh.csv')
 
 if __name__ == '__main__':
-    # get data from DB
+    # Step 1: Obtain data for 3 tables after running OpenRefine -> explained in readme.
+
+    # Step 2. Get remaining data from DB.
     get_data()
 
-    # type correction after running OpenRefine and obtaining data
+    # Step 3. Complete type correction.
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1, file2, file3]
     typecorrection(type_correct_list)
 
-    # reconciliation next
+    # Step 4: Complete reconciliation.
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1, file2]
     reconciliation(recon_list)
 
-    # integration next
+    # Step 5: Integration.
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_data_officer.csv'
     file3 = 'csv/after_recon/postgres_public_trr_trrstatus_refresh.csv'
     integration_list = [file1,file2,file3]
     integration(integration_list)
 
-    # foreign key match -> together function
+    # Step 6: Ensure foreign key match with together function.
     file1 = 'csv/original/postgres_public_trr_actionresponse_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_charge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv'
@@ -504,14 +506,14 @@ if __name__ == '__main__':
     together_list = [file1, file2, file3, file4, file5, file6]
     together(together_list)
 
-    # redact next
+    # Step 7: Fix redacts.
     file1 = 'csv/after_integration/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_integration/postgres_public_trr_trrstatus_refresh.csv'
     redact_list = [file1,file2,file3]
     redact(redact_list)
 
-    # final formatting, column adjustment, and output to output file
+    # Step 8: Complete final formatting, column adjustment, and output all to output directory.
     trr_df = pd.read_csv('../output/trr_trr_refresh.csv')
     trr_df = trr_df.rename(columns={'event_number': 'event_id'})
     trr_df.drop('officer_age', axis=1, inplace=True)
