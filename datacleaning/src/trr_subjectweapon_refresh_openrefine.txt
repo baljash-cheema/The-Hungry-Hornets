@@ -1,7 +1,7 @@
-SQL query:
+SQL query to enter into OpenRefine:
 SELECT * FROM trr_subjectweapon_refresh
 
-JSON code:
+JSON code to enter into Apply filed in OpenRefine:
 
 [
   {

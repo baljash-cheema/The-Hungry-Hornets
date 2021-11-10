@@ -1,8 +1,8 @@
-SQL query:
+SQL query to enter into OpenRefine:
 
 SELECT * FROM trr_trr_refresh
 
-JSON code:
+JSON code to enter into Apply filed in OpenRefine:
 [
   {
     "op": "core/text-transform",
