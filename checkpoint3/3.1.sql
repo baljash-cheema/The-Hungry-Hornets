@@ -14,7 +14,7 @@ WHERE data_officerallegation.allegation_category_id IN
   OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'));
 
 --area_ids from those allegation id's -> 5293 of these (464 if area_id distinct)
-SELECT *
+SELECT area_id
 FROM data_allegation_areas
 WHERE data_allegation_areas.allegation_id IN
   (SELECT DISTINCT(allegation_id)
@@ -91,7 +91,7 @@ WHERE data_policebeat.beat_name IN
           WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
           OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')))));
 
---all names of areas with these allegations, including beat numbers for many
+--all names of areas with these allegations, including beat numbers for many -> 464
 SELECT name
 FROM data_area
 WHERE data_area.id IN
