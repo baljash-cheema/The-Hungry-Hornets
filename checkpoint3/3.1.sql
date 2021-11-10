@@ -14,7 +14,7 @@ WHERE data_officerallegation.allegation_category_id IN
   OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'));
 
 --area_ids from those allegation id's -> 5293 of these (464 if area_id distinct)
-SELECT area_id
+SELECT *
 FROM data_allegation_areas
 WHERE data_allegation_areas.allegation_id IN
   (SELECT DISTINCT(allegation_id)
@@ -70,7 +70,7 @@ WHERE data_linearea.id IN
       WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
       OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
 
---these are all beat names from these allgeations
+--these are all beat names from these allegations
 --in data_area, names of areas are either neighborhoods or beats (given by number)
 --i mapped those beat numbers to beat names
 --so if we combine the output from both, we have a list of names
@@ -91,6 +91,7 @@ WHERE data_policebeat.beat_name IN
           WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
           OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')))));
 
+--all names of areas with these allegations, including beat numbers for many
 SELECT name
 FROM data_area
 WHERE data_area.id IN
@@ -104,3 +105,15 @@ WHERE data_area.id IN
       FROM data_allegationcategory
       WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
       OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
+
+--date of allegations
+SELECT incident_date
+FROM data_allegation
+WHERE data_allegation.crid IN
+  (SELECT DISTINCT(allegation_id)
+  FROM data_officerallegation
+  WHERE data_officerallegation.allegation_category_id IN
+    (SELECT id
+    FROM data_allegationcategory
+    WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+    OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')));
