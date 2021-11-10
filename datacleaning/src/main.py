@@ -472,20 +472,20 @@ def redact(List):
 
 if __name__ == '__main__':
     # get data from DB
-    get_data()
+    # get_data()
 
     # type_correct after OpenRefine with JSON files
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1, file2, file3]
-    typecorrection(type_correct_list)
+    # typecorrection(type_correct_list)
 
     # reconciliation next
-    file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv' # changed to original files
-    file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv' # changed to original files
+    file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
+    file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1, file2]
-    # reconciliation(recon_list)
+    reconciliation(recon_list)
 
     # integration next
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'

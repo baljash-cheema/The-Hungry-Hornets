@@ -9,6 +9,13 @@ Our task here is to clean dirty data entered into the following trr tables:
 
 For this assignment, we will be accessing data from the CPDP database using OpenRefine and Python.  We will describe each step in detail.
 
+Out work is under our main repo under the datacleaning directory in GitHub: 
+path: The-Hungry-Hornets/datacleaning
+
+For this assignment, we only submit a ZIP file with the full datacleaning folder within it and leave the rest of the repo out. Thus the main directory being referred to is the datacleaning folder.
+
+Within this directory, src and output are the two subdirectories. 
+
 The following packages from Python will be needed:
 csv
 datetime
