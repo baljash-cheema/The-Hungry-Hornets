@@ -20,4 +20,7 @@ JSON code:
 ]
 
 Output final product to this location:
-'csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv'
+csv/after_openrefine/
+
+And name it as:
+postgres_public_trr_subjectweapon_refresh.csv

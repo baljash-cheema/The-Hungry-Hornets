@@ -21,4 +21,7 @@ JSON code:
 
 
 Output final product to this location:
-'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
+'csv/after_openrefine/
+
+And name it:
+postgres_public_trr_trrstatus_refresh.csv
