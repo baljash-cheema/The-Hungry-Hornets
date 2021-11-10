@@ -270,14 +270,19 @@ def reconciliation(List):
 
 def integration(List):
     print('integration')
-    trr_df = pd.read_csv(List[2]) #status refresh
+    trr_df = pd.read_csv(List[2])
     officer_df = pd.read_csv(List[1])
+
+    trr_df.drop('Unnamed: 0', axis=1, inplace=True)
+    trr_df.drop('Unnamed: 0.1', axis=1, inplace=True)
+    officer_df.drop('Unnamed: 0', axis=1, inplace=True)
 
     trr_df['officer_appointed_date'].replace({'REDACTED': None},inplace =True)
 
     df = pd.merge(trr_df, officer_df,  how='left', left_on=['officer_first_name', 'officer_last_name'],
                        right_on=['first_name', 'last_name']).fillna("None")
 
+    df.to_csv('test.csv')
     df8 = df[df['id'] != 'None'].reset_index(drop=True)
     df4 = df[df['id'] == 'None'][trr_df.columns.values.tolist()].reset_index(drop=True)
     df4['officer_birth_year'] = df4['officer_birth_year'].apply(pd.to_numeric, errors='coerce')
@@ -307,6 +312,7 @@ def integration(List):
     p5 = df3[df3['id'] == 'None'].reset_index(drop=True)
 
     final_trr_status_cleaned = pd.concat([df8, df6, p3, p4, p5])
+    # print('Status columns: ', final_trr_status_cleaned.columns)
     final_trr_status_cleaned = final_trr_status_cleaned[['officer_rank', 'officer_star', 'status', 'status_datetime', 'officer_age', 'officer_unit_at_incident',
          'trr_report_id','id']]
 
@@ -319,6 +325,10 @@ def integration(List):
     trr_df['officer_appointed_date'].replace({'REDACTED': None}, inplace=True)
     #'officer_first_name', 'officer_middle_initial', 'officer_last_name', 'officer_middle_initial', 'officer_appointed_date', 'officer_birth_year', 'officer_gender', 'officer_race'],
     #'first_name','middle_initial','last_name','suffix_name','appointed_date','birth_year','gender','race'])
+
+    trr_df.drop('Unnamed: 0', axis=1, inplace=True)
+    trr_df.drop('Unnamed: 0.1', axis=1, inplace=True)
+    officer_df.drop('Unnamed: 0', axis=1, inplace=True)
 
     df = pd.merge(trr_df, officer_df, how='left',
                   left_on=['officer_first_name','officer_last_name'
@@ -356,6 +366,7 @@ def integration(List):
     p5 = df3[df3['id'] == 'None'].reset_index(drop=True)
 
     final_trr_cleaned = pd.concat([df9, df6, p3, p4, p5])
+    print('trr_trr_refresh columns: ', final_trr_cleaned.columns)
     final_trr_cleaned = final_trr_cleaned[['trr_id','id', 'event_number', 'cr_number', 'beat', 'block', 'direction',
                                            'street', 'location', 'trr_datetime',
                                            'indoor_or_outdoor', 'lighting_condition', 'weather_condition',
@@ -373,7 +384,7 @@ def integration(List):
     unit_info=pd.read_csv('csv/original/postgres_public_data_policeunit.csv')
 
     for i in range(len(final_trr_cleaned['officer_unit_name'])):
-        print("Working")
+        # print("Working")
         if len(final_trr_cleaned['officer_unit_name'][i]) == 3:
             final_trr_cleaned['officer_unit_name'][i] = int(final_trr_cleaned['officer_unit_name'][i])
         elif len(final_trr_cleaned['officer_unit_name'][i]) == 2:
@@ -383,7 +394,7 @@ def integration(List):
 
     new_df_unit_id = pd.merge(final_trr_cleaned, unit_info, how='left', left_on='officer_unit_name',
                               right_on='unit_name').fillna("None")
-    print(new_df_unit_id.columns)
+    # print(new_df_unit_id.columns)
     new_df_unit_id = new_df_unit_id[['trr_id', 'event_number', 'cr_number', 'beat', 'block', 'direction',
                                      'street', 'location', 'trr_datetime', 'indoor_or_outdoor',
                                      'lighting_condition', 'weather_condition', 'notify_oemc',
@@ -394,7 +405,7 @@ def integration(List):
                                      'subject_age', 'subject_birth_year', 'subject_gender', 'subject_race',
                                      'officer_age', 'officer_unit_name', 'officer_unit_detail',
                                      'trr_created', 'latitude', 'longitude', 'point', 'id_y', 'description']]
-    new_df_unit_id = new_df_unit_id.rename(columns={'id': 'officer_unit_id', 'description': 'officer_unit_detail_id'})
+    new_df_unit_id = new_df_unit_id.rename(columns={'id_y': 'officer_unit_id', 'description': 'officer_unit_detail_id'})
     new_df_unit_id.to_csv('csv/after_integration/postgres_public_data_policeunit.csv')
 
 def together(List):
@@ -474,20 +485,20 @@ if __name__ == '__main__':
     # Step 1: Obtain data for 3 tables after running OpenRefine -> explained in readme.
 
     # Step 2. Get remaining data from DB.
-    get_data()
+    # get_data()
 
     # Step 3. Complete type correction.
     file1 = 'csv/after_openrefine/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1, file2, file3]
-    typecorrection(type_correct_list)
+    # typecorrection(type_correct_list)
 
     # Step 4: Complete reconciliation.
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv'
     file2 = 'csv/after_typecorrection/postgres_public_trr_trrstatus_refresh.csv'
     recon_list = [file1, file2]
-    reconciliation(recon_list)
+    # reconciliation(recon_list)
 
     # Step 5: Integration.
     file1 = 'csv/after_recon/postgres_public_trr_trr_refresh.csv'
@@ -514,20 +525,27 @@ if __name__ == '__main__':
     redact(redact_list)
 
     # Step 8: Complete final formatting, column adjustment, and output all to output directory.
+    ## TRR_refresh -> DONE
     trr_df = pd.read_csv('../output/trr_trr_refresh.csv')
-    trr_df = trr_df.rename(columns={'event_number': 'event_id'})
+    trr_df = trr_df.rename(columns={'event_number': 'event_id', 'id' : 'officer_id', 'cr_number':'crid','trr_id':'id', 'officer_unit_detail': 'officer_unit_detail_id', 'officer_unit_name': 'officer_unit_id'})
+    trr_df.drop('Unnamed: 0',axis=1,inplace=True)
+    trr_df.drop('Unnamed: 0.1',axis=1,inplace=True)
     trr_df.drop('officer_age', axis=1, inplace=True)
-    trr_df.drop('officer_unit_detail', axis=1, inplace=True)
-    trr_df.drop('officer_unit_name', axis=1, inplace=True)
     trr_df.drop('trr_created', axis=1, inplace=True)
     trr_df.drop('latitude', axis=1, inplace=True)
     trr_df.drop('longitude', axis=1, inplace=True)
+    trr_df = trr_df[['id', 'crid', 'event_id', 'beat', 'block', 'direction', 'street', 'location', 'trr_datetime', 'indoor_or_outdoor', 'lighting_condition', 'weather_condition', 'notify_oemc', 'notify_district_sergeant', 'notify_op_command', 'notify_det_division', 'party_fired_first', 'officer_assigned_beat', 'officer_on_duty', 'officer_in_uniform', 'officer_injured', 'officer_rank', 'subject_armed', 'subject_injured', 'subject_alleged_injury', 'subject_age', 'subject_birth_year', 'subject_gender', 'subject_race', 'officer_id', 'officer_unit_id', 'officer_unit_detail_id', 'point']]
     trr_df.to_csv('../output/trr_trr_refresh.csv')
 
+    ## TRR_status -> DONE 
     trr_status = pd.read_csv('../output/trr_trrstatus_refresh.csv')
-    trr_status = trr_status.rename(columns={'officer_rank': 'rank ', 'officer_star':'star', })
+    trr_status = trr_status.rename(columns={'officer_rank': 'rank', 'officer_star':'star','id' : 'officer_id', 'trr_report_id' : 'trr_id' })
     trr_status.drop('officer_age', axis=1, inplace=True)
     trr_status.drop('officer_unit_at_incident', axis=1, inplace=True)
+    trr_status.drop('Unnamed: 0',axis=1,inplace=True)
+    trr_status.drop('Unnamed: 0.1',axis=1,inplace=True)
+    trr_status.drop('Unnamed: 0.1.1',axis=1,inplace=True)
+    trr_status = trr_status[['rank', 'star', 'status', 'status_datetime', 'officer_id', 'trr_id']]
     trr_status.to_csv('../output/trr_trrstatus_refresh.csv')
 
     trr_charge = pd.read_csv('csv/original/postgres_public_trr_charge_refresh.csv')
@@ -535,8 +553,9 @@ if __name__ == '__main__':
     trr_charge.to_csv('../output/trr_charge_refresh.csv')
 
     trr_action = pd.read_csv('csv/original/postgres_public_trr_actionresponse_refresh.csv')
-    trr_action.to_csv('../output/trr_action.csv')
+    trr_action.drop('')
+    trr_action.to_csv('../output/trr_actionresponse.csv')
 
     trr_subject = pd.read_csv('csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv')
-    trr_subject.to_csv('../output/trr_subject.csv')
+    trr_subject.to_csv('../output/trr_subjectweapon.csv')
 
