@@ -27,7 +27,7 @@ def get_data():
 
     officer_loc = 'csv/original/postgres_public_data_officer.csv'
     policeunit_loc = 'csv/original/postgres_public_data_policeunit.csv'
-    actionrefresh_loc = 'csv/original/postgres_public_trr_trractionresponse_refresh.csv'
+    actionrefresh_loc = 'csv/original/postgres_public_trr_actionresponse_refresh.csv'
     chargefresh_loc = 'csv/original/postgres_public_trr_charge_refresh.csv'
     subjectweapon_loc = 'csv/original/postgres_public_trr_subjectweapon_refresh.csv'
     refresh_loc = 'csv/original/postgres_public_trr_trr_refresh.csv'
@@ -37,7 +37,7 @@ def get_data():
     loc_list = [officer_loc, policeunit_loc, actionrefresh_loc, chargefresh_loc, subjectweapon_loc, refresh_loc,
                 status_loc, weapons_loc]
 
-    for sql,output in zip(sql_queries, loc_list)
+    for sql,output in zip(sql_queries, loc_list):
         table = pd.read_sql_query(sql,connection)
         table.to_csv(output)
 
@@ -479,7 +479,7 @@ if __name__ == '__main__':
     file2 = 'csv/original/postgres_public_trr_weapondischarge_refresh.csv'
     file3 = 'csv/after_openrefine/postgres_public_trr_trrstatus_refresh.csv'
     type_correct_list = [file1, file2, file3]
-    # typecorrection(type_correct_list)
+    typecorrection(type_correct_list)
 
     # reconciliation next
     file1 = 'csv/after_typecorrection/postgres_public_trr_trr_refresh.csv' # changed to original files
