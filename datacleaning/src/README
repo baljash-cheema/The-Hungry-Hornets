@@ -9,7 +9,7 @@ Our task here is to clean dirty data entered into the following trr tables:
 
 For this assignment, we will be accessing data from the CPDP database using OpenRefine and Python.  We will describe each step in detail.
 
-Out work is under our main repo under the datacleaning directory in GitHub: 
+Our work is under our main repo under the datacleaning directory in GitHub: 
 path: The-Hungry-Hornets/datacleaning
 
 For this assignment, we only submit a ZIP file with the full datacleaning folder within it and leave the rest of the repo out. Thus the main directory being referred to is the datacleaning folder.
@@ -33,17 +33,18 @@ port: 5433
 user: cpdbstudent
 pw: DataSci4AI
 
-
-For each of the three tables, a txt file is provided in the src directory with instructions to alter that table. The instructions give the SQL query to enter in OpenRefine to access the table, the JSON code to enter to perform the changes, and the name/location that the resulting table should be exported to as a CSV to run through our Python program. The three tables are listed, with the file name with the associated instructions. 
+For each of the three tables, a txt file is provided in the src directory with instructions to alter that table. The instructions give the SQL query to enter in OpenRefine to access the table, the JSON code to enter to perform the changes using the Apply feature, and the name/location that the resulting table should be exported to as a CSV to run through our Python program. The three tables are listed, with the file name with the associated instructions. 
 
 1. trr_trr_refresh, src/trr_trr_refresh_openrefine.txt
 2. trr_subjectweapon_refresh, src/trr_subjectweapon_refresh_openrefine.txt
 3. trr_trrstatus_refresh, src/trr_trrstatus_refresh_openrefine.txt
 
-This should result in 3 CSVs being saved to src/csv/after_openrefine. 
+This should result in 3 CSVs being saved to src/csv/after_openrefine. There are no other CSVs that need to be downloaded to run our program. 
 
 Step 2:
-Run main.py found at src/main.py. This program will upload the CSVs saved from OpenRefine as long as the file name that is expected and the location the file is expected to be saved at match up. This program will access the CPDP database tables required for our task and save them as CSVs to move through our program in the src/csv/original directory. As the files move through each function, they will go through a series directories to track flow. These are all under the src/csv directory but the user need not follow the flow of these files. 
+Run main.py found at src/main.py. This is all the user needs to do. 
+
+This program will upload the CSVs saved from OpenRefine as long as the file name that is expected and the location the file is expected to be saved at match up. This program will access the CPDP database tables required for our task and save them as CSVs to move through our program in the src/csv/original directory. As the files move through each function, they will go through a series directories to track flow. These are all under the src/csv directory but the user need not follow the flow of these files. 
 
 Step 3:
 The final CSVs will be found under the output directory.  
