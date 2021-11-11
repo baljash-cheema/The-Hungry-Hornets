@@ -66,7 +66,6 @@ WHERE alderman IS NOT NULL and data_area.id IN
       OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
 
 --Can also link it to commander id -> many nulls
-
 SELECT *
 FROM data_officer
 WHERE data_officer.id in
@@ -83,3 +82,18 @@ WHERE data_officer.id in
         FROM data_allegationcategory
         WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
         OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
+
+--Same kind of thing but linking to police headquarter id 
+SELECT police_hq_id
+FROM data_area
+WHERE police_hq_id is not null and data_area.id IN
+  (SELECT area_id
+  FROM data_allegation_areas
+  WHERE data_allegation_areas.allegation_id IN
+    (SELECT DISTINCT(allegation_id)
+    FROM data_officerallegation
+    WHERE data_officerallegation.allegation_category_id IN
+      (SELECT id
+      FROM data_allegationcategory
+      WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+      OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
