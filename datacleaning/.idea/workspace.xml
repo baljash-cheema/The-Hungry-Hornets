@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0229782f-3a1c-47e1-ac65-295b6b45d9c3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/trr_action.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/trr_charge_refresh.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/trr_charge_refresh.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/trr_subject.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/trr_trr_refresh.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/trr_trr_refresh.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/trr_trrstatus_refresh.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/trr_trrstatus_refresh.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/output/trr_weapondischarge_refresh.csv" beforeDir="false" afterPath="$PROJECT_DIR$/output/trr_weapondischarge_refresh.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/csv/after_openrefine/postgres_public_trr_subjectweapon_refresh.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csv/after_recon/trr_status_0.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/csv/after_typecorrection/postgres_public_trr_weapondischarge_refresh.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csv/original/postgres_public_trr_actionresponse_refresh.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/csv/original/postgres_public_trr_actionresponse_refresh.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csv/original/postgres_public_trr_charge_refresh.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/csv/original/postgres_public_trr_charge_refresh.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tester.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.csv" beforeDir="false" />
-    </list>
+    <list default="true" id="0229782f-3a1c-47e1-ac65-295b6b45d9c3" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -211,7 +194,7 @@
       <workItem from="1636259568050" duration="4856000" />
       <workItem from="1636264837373" duration="655000" />
       <workItem from="1636551980249" duration="569000" />
-      <workItem from="1636552582784" duration="23316000" />
+      <workItem from="1636552582784" duration="23639000" />
     </task>
     <servers />
   </component>
