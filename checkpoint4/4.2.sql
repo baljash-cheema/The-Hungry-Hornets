@@ -83,7 +83,7 @@ WHERE data_officer.id in
         WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
         OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
 
---Same kind of thing but linking to police headquarter id 
+--Same kind of thing but linking to police headquarter id
 SELECT police_hq_id
 FROM data_area
 WHERE police_hq_id is not null and data_area.id IN
@@ -97,3 +97,34 @@ WHERE police_hq_id is not null and data_area.id IN
       FROM data_allegationcategory
       WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
       OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
+
+
+---one option is area type (beat, ward, neighborhoods, community, police-districts,school-grounds)
+
+--distinct lawsuits filed against officers with DAM complaints
+SELECT distinct(primary_cause)
+FROM lawsuit_lawsuit
+WHERE lawsuit_lawsuit.id in
+(SELECT lawsuit_id
+FROM lawsuit_lawsuit_officers
+WHERE lawsuit_lawsuit_officers.officer_id IN
+    (SELECT officer_id
+    FROM data_officerallegation
+    WHERE data_officerallegation.allegation_category_id IN
+      (SELECT id
+      FROM data_allegationcategory
+      WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+      OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))));
+
+
+---not sure what this is doing but gives a ton of output
+      SELECT *
+      FROM data_officerassignmentattendance
+      WHERE data_officerassignmentattendance.officer_id IN
+          (SELECT officer_id
+              FROM data_officerallegation
+              WHERE data_officerallegation.allegation_category_id IN
+                (SELECT id
+                FROM data_allegationcategory
+                WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+                OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')));
