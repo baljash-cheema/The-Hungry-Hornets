@@ -97,8 +97,27 @@ how does the co-accusal pattern compare between more and less decorated officers
 Specifically, how does the co-accusal pattern compare between those with more and less than the average number of awards, respectively?
 */
 
+/* 
+Finding number of awards per officer
+*/
 
---Award number greater than average
+SELECT officer_id, count(award_type) as num_awards
+FROM data_award
+WHERE data_award.officer_id IN
+                  (SELECT id
+                  FROM data_officer
+                  WHERE data_officer.id IN
+                    (SELECT officer_id
+                    FROM data_officerallegation
+                    WHERE data_officerallegation.allegation_category_id IN
+                      (SELECT id
+                      FROM data_allegationcategory
+                      WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+                      OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))))
+GROUP BY officer_id;
+
+/*--Award number greater than average*/
+
 DROP TABLE IF EXISTS da_category_ids;
 CREATE TEMP TABLE da_category_ids AS (
     SELECT id
