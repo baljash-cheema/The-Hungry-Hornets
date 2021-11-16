@@ -1,6 +1,6 @@
 --THIS JOINS OFFICERS WHO HAVE DAM ALLEGATIONS
 
-SELECT da1.officer_id, da2.officer_id, COUNT(DISTINCT da1.allegation_id)
+SELECT da1.officer_id src, da2.officer_id dst, COUNT(DISTINCT da1.allegation_id) relationship
 FROM data_officerallegation da1
 JOIN data_officerallegation da2 ON da1.allegation_id = da2.allegation_id AND da1.officer_id < da2.officer_id
 WHERE da2.allegation_category_id IN
