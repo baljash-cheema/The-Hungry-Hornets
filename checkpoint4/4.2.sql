@@ -1,3 +1,19 @@
+--QUESITON 1
+--officers with same allegation catergories id's
+
+SELECT da1.officer_id, da2.officer_id, da2.allegation_category_id
+FROM data_officerallegation da1
+JOIN data_officerallegation da2 ON da1.allegation_category_id = da2.allegation_category_id AND da1.officer_id < da2.officer_id
+WHERE da2.allegation_category_id IN
+    (SELECT id
+    FROM data_allegationcategory
+    WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+    OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))
+    GROUP BY da1.officer_id, da2.officer_id, da2.allegation_category_id ORDER BY count(*) DESC;
+
+--condensed
+SELECT da1.officer_id, da2.officer_id, da2.allegation_category_id FROM data_officerallegation da1 JOIN data_officerallegation da2 ON da1.allegation_category_id = da2.allegation_category_id AND da1.officer_id < da2.officer_id WHERE da2.allegation_category_id IN (SELECT id FROM data_allegationcategory WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%' OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')) GROUP BY da1.officer_id, da2.officer_id, da2.allegation_category_id ORDER BY count(*) DESC;
+
 --THIS JOINS OFFICERS WHO HAVE DAM ALLEGATIONS
 
 SELECT da1.officer_id src, da2.officer_id dst, COUNT(DISTINCT da1.allegation_id) relationship
@@ -10,6 +26,10 @@ WHERE da2.allegation_category_id IN
     OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))
 GROUP BY da1.officer_id, da2.officer_id ORDER BY count(*) DESC;
 
+--condensed to get on graphx
+SELECT da1.officer_id src, da2.officer_id dst, COUNT(DISTINCT da1.allegation_id) relationship FROM data_officerallegation da1 JOIN data_officerallegation da2 ON da1.allegation_id = da2.allegation_id AND da1.officer_id < da2.officer_id WHERE da2.allegation_category_id IN (SELECT id FROM data_allegationcategory WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%' OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')) GROUP BY da1.officer_id, da2.officer_id ORDER BY count(*) DESC;
+
+
 ----------HOORAY!
 
 /*
@@ -18,7 +38,7 @@ CAN WE ASK HOW MANY PAIRS OF OFFICERS SHARE THE SAME ALLEGATION CATEGORIES?
 
 /*
 I swapped some things around in this below cateogry. Let's think about if this
-can be adapted for q2. 
+can be adapted for q2.
 
 */
 SELECT da1.officer_id, da2.officer_id, COUNT(DISTINCT da2.allegation_category_id)
