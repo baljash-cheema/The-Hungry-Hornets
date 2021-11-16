@@ -1,3 +1,14 @@
+SELECT da1.officer_id src, da2.officer_id dst, COUNT(DISTINCT da1.allegation_id) relationship
+FROM data_officerallegation da1 JOIN data_officerallegation da2 ON da1.allegation_id = da2.allegation_id AND da1.officer_id < da2.officer_id
+WHERE da1.allegation_id AND da2.allegation_id IN
+      (SELECT id
+      FROM data_allegationcategory
+      WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
+      OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E'))
+GROUP BY da1.officer_id, da2.officer_id ORDER BY count(*) DESC;
+
+--can we make something like the above work? 
+
 --Award data for all officers with DAM allegations
 --Can we have this vary over time?
 SELECT *
@@ -25,7 +36,7 @@ WHERE data_salary.officer_id IN
              FROM data_allegationcategory
              WHERE data_allegationcategory.category = 'Drug / Alcohol Abuse' OR data_allegationcategory.category = 'Medical' or allegation_name LIKE 'Medical Roll%'
              OR data_allegationcategory.category_code IN ('024', '003', '003A', '003B', '003C', '003D', '003E')));
-      
+
 --Data on those officers with DAM
 SELECT *
 FROM data_officer
