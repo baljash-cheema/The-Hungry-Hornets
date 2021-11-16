@@ -2,8 +2,7 @@
 Question 1:
 Among officers who have drug & alcohol abuse and medical allegations against them,
 what is the general co-accusal pattern? Specifically, how often are these
-officers accused of the same allegations alongside multiple officers?
-
+officers co-accusers alongside other officers?
 */
 
 DROP TABLE IF EXISTS da_category_ids;
@@ -33,7 +32,6 @@ JOIN da_cohort ON da_cohort.officer_id = class_example.src;
 Question 2:
 Among officers who have drug & alcohol abuse and medical allegations against them,
 how does the co-accusal pattern compare between officers who earn above and below the average annual salary, respectively?
-
 */
 
 --Salary greater than average
@@ -95,7 +93,7 @@ JOIN da_cohort ON da_cohort.officer_id = class_example.src;
 /*
 Question 3:
 Among officers who have drug & alcohol abuse and medical allegations against them,
-how does the co-accusal pattern compare between more and less decorated officers? 
+how does the co-accusal pattern compare between more and less decorated officers?
 Specifically, how does the co-accusal pattern compare between those with more and less than the average number of awards, respectively?
 */
 
