@@ -24,7 +24,7 @@ FROM data_officerallegation da1
 JOIN data_officerallegation da2 ON da1.allegation_id = da2.allegation_id AND da1.officer_id < da2.officer_id
 GROUP BY da1.officer_id, da2.officer_id ORDER BY count(*) DESC);
 
-SELECT * FROM class_example
+SELECT src,dst,relationship FROM class_example
 JOIN da_cohort ON da_cohort.officer_id = class_example.src;
 
 /*
@@ -59,7 +59,7 @@ FROM data_officerallegation da1
 JOIN data_officerallegation da2 ON da1.allegation_id = da2.allegation_id AND da1.officer_id < da2.officer_id
 GROUP BY da1.officer_id, da2.officer_id ORDER BY count(*) DESC);
 
-SELECT * FROM class_example
+SELECT src,dst,relationship FROM class_example
 JOIN da_cohort ON da_cohort.officer_id = class_example.src;
 
 --Salary less than average
@@ -87,7 +87,7 @@ FROM data_officerallegation da1
 JOIN data_officerallegation da2 ON da1.allegation_id = da2.allegation_id AND da1.officer_id < da2.officer_id
 GROUP BY da1.officer_id, da2.officer_id ORDER BY count(*) DESC);
 
-SELECT * FROM class_example
+SELECT src,dst,relationship FROM class_example
 JOIN da_cohort ON da_cohort.officer_id = class_example.src;
 
 /*
@@ -97,7 +97,7 @@ how does the co-accusal pattern compare between more and less decorated officers
 Specifically, how does the co-accusal pattern compare between those with more and less than the average number of awards, respectively?
 */
 
-/* 
+/*
 Creating modified awards table with number of awards per officer
 */
 
@@ -160,7 +160,7 @@ FROM data_officerallegation da1
 JOIN data_officerallegation da2 ON da1.allegation_id = da2.allegation_id AND da1.officer_id < da2.officer_id
 GROUP BY da1.officer_id, da2.officer_id ORDER BY count(*) DESC);
 
-SELECT * FROM class_example
+SELECT src,dst,relationship FROM class_example
 JOIN da_cohort ON da_cohort.officer_id = class_example.src;
 
 /* Award number below average */
@@ -206,5 +206,5 @@ FROM data_officerallegation da1
 JOIN data_officerallegation da2 ON da1.allegation_id = da2.allegation_id AND da1.officer_id < da2.officer_id
 GROUP BY da1.officer_id, da2.officer_id ORDER BY count(*) DESC);
 
-SELECT * FROM class_example
+SELECT src,dst,relationship FROM class_example
 JOIN da_cohort ON da_cohort.officer_id = class_example.src;
