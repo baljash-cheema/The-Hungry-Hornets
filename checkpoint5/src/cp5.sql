@@ -1,3 +1,5 @@
+--This is the code provided to the language model to construct the table in SQL
+
 DROP TABLE IF EXISTS da_category_ids;
 CREATE TEMP TABLE da_category_ids AS (
   (SELECT data_officerallegation.id,data_allegationcategory.allegation_name,data_allegationcategory.category
