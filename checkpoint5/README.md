@@ -24,10 +24,12 @@ d.	what is the allegation count of [X]?
 e.	What is the sustained count of [X]?
 f.	What is current salary of [X]?
 
+SQL code for our table:
+This is found under src/cp5.sql and can be run to re-create the table we used
+to train our model to answer questions on.
 
 How to run our notebook:
 You will find the notebook under /src titled Checkpoint5.ipynb. Please load this in
 colab and run all cells.
 
-How to test code:
-Need to give test queries
+How to test our code:
