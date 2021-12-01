@@ -4,12 +4,30 @@ By Lili Barsky, Vikram Kharvi, and Josh Cheema (Team
 Hungry Hornets)
 
 Checkpoint 5:
-We would like to build a natural language model that allows users to ask questions directly regarding drug and alcohol abuse allegations, which returns answers accordingly. Here are some examples:
-1. Among officers with drug and alcohol abuse allegations, who has the highest salary?
-2. What are the names of officers who have 5+ drug and alcohol abuse allegations? Evaluation Method: In order to evaluate this question and answering NLP model, we can get ground truth by performing analytics on the CPDP database, using DataGrip, and match this with the reply from the natural language model. With this data, we will be plotting accuracy, precision, F-score and a confusion matrix.
+Can we build a natural language processing model that allow users to ask questions
+directly to it, in order to retrieve information on officers who have drug and
+alcohol abuse allegations against them? The aim is to create a tool that would
+allow novice users to find out more information about this individuals without
+coding experience. We will do this by adapting the TAPAS language model created
+by Google and available publicly. Due to constraints in computational power with
+ the model itself, we will limit our analysis to officers with more than 2
+ allegations of drug and alcohol abuse, of whom have had at least 1 sustained
+ allegation and have a numerical value listed for their current salary.
+ We will measure the success of our approach by asking the following questions
+ to the model across every single officer and testing the overall accuracy per
+ question. Here, [X] represents each individual officer in our table.
 
-How to run:
-Load into colab and run it
+a.	What is the race of [X]?
+b.	What is the gender of [X]?
+c.	What is the birth year of [X]?
+d.	what is the allegation count of [X]?
+e.	What is the sustained count of [X]?
+f.	What is current salary of [X]?
+
+
+How to run our notebook:
+You will find the notebook under /src titled Checkpoint5.ipynb. Please load this in
+colab and run all cells.
 
 How to test code:
-Need to give test queries 
+Need to give test queries
