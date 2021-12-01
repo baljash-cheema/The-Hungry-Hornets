@@ -4,10 +4,10 @@ By Lili Barsky, Vikram Kharvi, and Josh Cheema (Team
 Hungry Hornets)
 
 Checkpoint 5:
-Can we build a natural language processing model that allow users to ask questions
+Can we build a natural language processing model that allows users to ask questions
 directly to it, in order to retrieve information on officers who have drug and
 alcohol abuse allegations against them? The aim is to create a tool that would
-allow novice users to find out more information about this individuals without
+allow novice users to find out more information about these individuals without
 coding experience. We will do this by adapting the TAPAS language model created
 by Google and available publicly. Due to constraints in computational power with
  the model itself, we will limit our analysis to officers with more than 2
