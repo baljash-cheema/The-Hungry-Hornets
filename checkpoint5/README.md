@@ -33,3 +33,13 @@ You will find the notebook under /src titled Checkpoint5.ipynb. Please load this
 colab and run all cells.
 
 How to test our code:
+To test the predictive capability of our code, users can enter questions related
+to certain columns by
+Column, name:
+0, 'gender'
+1, 'race'
+2, 'birth_year'
+3, 'officer_name'
+4, 'allegation_count'
+5, 'sustained_count'
+6, 'current_salary'
