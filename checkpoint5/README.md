@@ -33,13 +33,11 @@ You will find the notebook under /src titled Checkpoint5.ipynb. Please load this
 colab and run all cells.
 
 How to test our code:
-To test the predictive capability of our code, users can enter questions related
-to certain columns by
-Column, name:
-0, 'gender'
-1, 'race'
-2, 'birth_year'
-3, 'officer_name'
-4, 'allegation_count'
-5, 'sustained_count'
-6, 'current_salary'
+To test the predictive capability of our code, users can enter the column they want
+our model to predict information for. For example, if gender is selected, the
+model will try to predict the gender of each officer in the table and report the
+accuracy of doing so.
+
+The possible column names are in a list under select_col_list right after the
+import statements for our code. The user must change select_col variable to one
+of the strings in the list. 
