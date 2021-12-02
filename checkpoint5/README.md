@@ -38,6 +38,5 @@ our model to predict information for. For example, if gender is selected, the
 model will try to predict the gender of each officer in the table and report the
 accuracy of doing so.
 
-The possible column names are in a list under select_col_list right after the
-import statements for our code. The user must change select_col variable to one
-of the strings in the list. 
+The possible column names are in a list under select_col_list under a section heading
+titled "Choose your column name in select_col." This can be adjusted to trial the code. 
